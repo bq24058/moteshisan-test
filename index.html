@@ -1,0 +1,3671 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>モテ資産診断 〜あなたの将来はこうなるかも？〜</title>
+  <style>
+    /* =========================================================================
+       1. BASE RESET & MOBILE-FIRST DESIGN TOKENS (Zero External Dependencies)
+    ========================================================================= */
+    :root {
+      --font-sans: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", "Meiryo", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+      --accent-pink: #E11D48;
+      --accent-soft: #FF5C8A;
+      --poster-crimson: #FF1457;
+      --shinkin-green: #008B5E;
+      --shinkin-dark: #006B48;
+      --shinkin-tint: #ECFDF5;
+      --navy: #0F2744;
+      --slate-bg: #F4F7F6;
+      --text-main: #0F2744;
+      --text-muted: #526277;
+      --border-soft: #E2E8F0;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: #E2E8F0;
+      color: var(--text-main);
+      width: 100%;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+      transition: background-color 0.55s ease;
+    }
+
+    button, input, a {
+      font-family: inherit;
+    }
+
+    .jp-wrap {
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .sr-only {
+      position: fixed;
+      top: -9999px;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* =========================================================================
+       2. ROOT MOBILE FRAME (Strictly max-width: 430px, Zero Overflow)
+    ========================================================================= */
+    #app-frame {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100dvh;
+      margin: 0 auto;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background-color: #FFF8FA;
+      overflow-x: hidden;
+      box-shadow: 0 20px 60px rgba(15, 39, 68, 0.14);
+      transition: background-color 0.55s ease, color 0.55s ease;
+    }
+
+    /* =========================================================================
+       3. TOP HEADER (Consistent Sound Toggle & Branding)
+    ========================================================================= */
+    #top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      height: 54px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: rgba(255, 248, 250, 0.94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 92, 138, 0.14);
+      transition: background-color 0.45s ease, border-color 0.45s ease;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+    }
+
+    .brand-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #FF5C8A, #FF8FAB);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.45s ease, border-color 0.45s ease;
+    }
+
+    .brand-texts {
+      min-width: 0;
+    }
+
+    #hdr-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--navy);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.2;
+      transition: color 0.45s ease;
+    }
+
+    #hdr-sub {
+      font-size: 10px;
+      font-weight: 700;
+      color: #64748B;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: color 0.45s ease;
+    }
+
+    #btn-sound {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      border: 1px solid #FECDD3;
+      background: #FFFFFF;
+      color: #334155;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.12s ease, background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+    #btn-sound:active {
+      transform: scale(0.95);
+    }
+
+    /* =========================================================================
+       4. ACT 1: BRIGHT FRIENDLY DIAGNOSIS START SCREEN
+    ========================================================================= */
+    #act-1 {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 18px 16px 22px;
+      gap: 16px;
+    }
+
+    .hero-card {
+      background: #FFFFFF;
+      border: 1px solid #FFE4EC;
+      border-radius: 26px;
+      padding: 24px 18px 22px;
+      text-align: center;
+      box-shadow: 0 12px 30px rgba(255, 92, 138, 0.08);
+      position: relative;
+      overflow: hidden;
+      margin: auto 0;
+    }
+
+    .hero-blob-1, .hero-blob-2 {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero-blob-1 {
+      width: 120px;
+      height: 120px;
+      top: -40px;
+      right: -36px;
+      background: rgba(255, 92, 138, 0.09);
+    }
+    .hero-blob-2 {
+      width: 110px;
+      height: 110px;
+      bottom: -44px;
+      left: -34px;
+      background: rgba(0, 139, 94, 0.08);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: #FFF1F5;
+      border: 1px solid #FECDD3;
+      color: #E11D48;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .hero-title {
+      font-size: clamp(26px, 7.6vw, 32px);
+      font-weight: 900;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(13px, 3.8vw, 15px);
+      font-weight: 800;
+      color: #E11D48;
+      letter-spacing: 0.01em;
+    }
+
+    .hero-desc {
+      font-size: clamp(12.5px, 3.5vw, 13.5px);
+      color: #475569;
+      line-height: 1.7;
+      max-width: 340px;
+    }
+
+    .meta-chips {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      color: #334155;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    .btn-primary-pink {
+      width: 100%;
+      min-height: 56px;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #FF4D7D, #E11D48);
+      color: #FFFFFF;
+      font-size: clamp(15px, 4.2vw, 16.5px);
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      box-shadow: 0 10px 24px rgba(225, 29, 72, 0.28);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: transform 0.14s ease, opacity 0.2s ease;
+    }
+    .btn-primary-pink:active {
+      transform: scale(0.98);
+    }
+
+    .start-foot-note {
+      text-align: center;
+      font-size: 11px;
+      color: #64748B;
+      margin-top: 8px;
+    }
+
+    /* =========================================================================
+       5. ACT 2: UNIFIED 8-STAGE PROGRESSIVE HORROR DIAGNOSIS
+    ========================================================================= */
+    #act-2 {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 14px 16px 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Consistent Diagnostic Progress Header (Q1/8–Q8/8 + Age Forecast Badge) */
+    #diag-progress-header {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      margin-bottom: 12px;
+    }
+
+    .prog-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    #q-num-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 11px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 800;
+      background: #FFFFFF;
+      color: #E11D48;
+      border: 1px solid #FECDD3;
+      transition: all 0.4s ease;
+    }
+
+    #age-forecast-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #ECFDF5;
+      color: #047857;
+      border: 1px solid #A7F3D0;
+      transition: all 0.4s ease;
+    }
+
+    .prog-segments {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 4px;
+    }
+
+    .prog-seg {
+      height: 6px;
+      border-radius: 999px;
+      background: #FDE2E8;
+      transition: background-color 0.4s ease;
+    }
+
+    /* Main Diagnostic Body */
+    #diag-stage-body {
+      margin: auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Stage 3 Future Forecast Mini-Window */
+    .sim-window-card {
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      border-radius: 18px;
+      padding: 13px 14px;
+      box-shadow: 0 4px 14px rgba(15, 39, 68, 0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .sim-window-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid #E2E8F0;
+    }
+
+    .sim-window-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: #475569;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .sim-msg-bubble {
+      background: #F1F5F9;
+      color: #1E293B;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .sim-status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #64748B;
+      min-height: 22px;
+      transition: color 0.3s ease;
+    }
+
+    /* Question Card */
+    #q-card {
+      background: #FFFFFF;
+      border: 1px solid #FFE4EC;
+      border-radius: 22px;
+      padding: 18px 16px;
+      box-shadow: 0 8px 22px rgba(15, 39, 68, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: background-color 0.45s ease, border-color 0.45s ease, color 0.45s ease;
+    }
+
+    #q-text {
+      font-size: clamp(16px, 4.6vw, 18.5px);
+      font-weight: 900;
+      line-height: 1.48;
+      color: var(--navy);
+      transition: color 0.45s ease;
+    }
+
+    #q-choices {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .choice-btn {
+      width: 100%;
+      min-height: 54px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1.5px solid #FCE7F3;
+      background: #FFF9FB;
+      color: var(--navy);
+      font-size: clamp(13px, 3.6vw, 14px);
+      font-weight: 700;
+      text-align: left;
+      line-height: 1.45;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+      transition: transform 0.12s ease, background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+    .choice-btn:active {
+      transform: scale(0.985);
+    }
+    .choice-arrow {
+      font-size: 13px;
+      opacity: 0.45;
+      flex-shrink: 0;
+    }
+
+    /* Stage-specific choice skins (Strictly Crisp & High Contrast) */
+    .choice-btn.skin-cool {
+      background: #F8FAFC;
+      border-color: #CBD5E1;
+      color: #1E293B;
+    }
+    .choice-btn.skin-slate {
+      background: #27303F;
+      border-color: #3E4C63;
+      color: #F8FAFC;
+    }
+    .choice-btn.skin-dark {
+      background: #1D1F26;
+      border-color: #323644;
+      color: #F8FAFC;
+    }
+
+    /* Stage 5 Clean Hijacked Choice (NO doubled/blurred text) */
+    .choice-btn.skin-hijacked {
+      background: #210B12;
+      border-color: #FF1457;
+      color: #FFFFFF;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+      padding: 12px 14px;
+    }
+    .hijack-strike {
+      font-size: 12px;
+      font-weight: 600;
+      color: #94A3B8;
+      text-decoration: line-through;
+      text-decoration-color: #FF1457;
+      text-decoration-thickness: 2px;
+      line-height: 1.35;
+    }
+    .hijack-replace {
+      font-size: 13.5px;
+      font-weight: 900;
+      color: #FFE4EC;
+      line-height: 1.4;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    .hijack-tag {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: #FF1457;
+      color: #FFFFFF;
+      font-size: 10px;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    #stage-hint-text {
+      font-size: 11.5px;
+      font-weight: 700;
+      text-align: center;
+      min-height: 18px;
+      color: #64748B;
+    }
+
+    /* =========================================================================
+       6. FIXED 430px-CONTAINED OVERLAYS (Zero Clipping on Any Screen)
+    ========================================================================= */
+    .frame-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 65;
+      background: rgba(5, 6, 10, 0.86);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+    }
+
+    .frame-overlay-box {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 430px;
+      z-index: 70;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+    }
+
+    /* Stage 2: 0.65s Flash Log Overlay */
+    #ov-stage2-flash {
+      background: #0B0B0F;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .flash-log-card {
+      width: 100%;
+      background: #14080C;
+      border: 2px solid #FF1457;
+      border-radius: 16px;
+      padding: 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Stage 4: 52% Filter Modal */
+    .alert-modal-card {
+      width: 100%;
+      max-width: 398px;
+      margin: auto;
+      background: #161B26;
+      border: 2px solid #E11D48;
+      border-radius: 20px;
+      padding: 20px 18px;
+      color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+    }
+
+    .modal-btn-row {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      margin-top: 4px;
+    }
+
+    .btn-crimson {
+      width: 100%;
+      min-height: 50px;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 14px;
+      background: #FF1457;
+      color: #FFFFFF;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 0.12s ease, opacity 0.2s ease;
+    }
+    .btn-crimson:active {
+      transform: scale(0.98);
+    }
+
+    .btn-ghost-dark {
+      width: 100%;
+      min-height: 46px;
+      padding: 11px 14px;
+      border-radius: 14px;
+      border: 1px solid #475569;
+      background: transparent;
+      color: #CBD5E1;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-ghost-dark:disabled {
+      border-color: #7F1D1D;
+      background: rgba(127, 29, 29, 0.25);
+      color: #FCA5A5;
+      cursor: not-allowed;
+    }
+
+    /* Stage 6: Candidate Countdown + Heart Crack Assessment Overlay */
+    #ov-stage6-assess {
+      background: rgba(8, 9, 13, 0.96);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .assess-card {
+      width: 100%;
+      background: #15171F;
+      border: 1.5px solid #2D3242;
+      border-radius: 22px;
+      padding: 22px 18px;
+      color: #FFFFFF;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .countdown-num {
+      font-family: var(--font-mono);
+      font-size: clamp(44px, 13vw, 56px);
+      font-weight: 900;
+      line-height: 1;
+      color: #FFFFFF;
+      transition: color 0.2s ease;
+    }
+
+    .stamp-box {
+      border: 3px solid #FF1457;
+      background: #1F070E;
+      color: #FFFFFF;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: clamp(13.5px, 3.8vw, 15px);
+      font-weight: 900;
+      letter-spacing: 0.02em;
+    }
+
+    /* Stage 7: Heartbeat Vignette + Top OS Notification Cascade */
+    #stage7-vignette {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 430px;
+      pointer-events: none;
+      z-index: 35;
+      animation: vignettePulse 1.05s ease-in-out infinite;
+    }
+
+    #s7-notif-tray {
+      position: fixed;
+      top: 58px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 430px;
+      padding: 0 12px;
+      z-index: 60;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      pointer-events: none;
+    }
+
+    .os-notif {
+      width: 100%;
+      background: rgba(18, 20, 27, 0.96);
+      border: 1px solid #334155;
+      border-left: 4px solid #FF1457;
+      border-radius: 14px;
+      padding: 9px 12px;
+      color: #FFFFFF;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
+      animation: notifDrop 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .os-notif-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 10px;
+      font-weight: 800;
+      color: #FDA4AF;
+      margin-bottom: 3px;
+    }
+
+    .os-notif-body {
+      font-size: 12px;
+      font-weight: 700;
+      color: #FFFFFF;
+      line-height: 1.4;
+    }
+
+    /* Stage 8: Poster-Linked 8px #FF1457 Climax + CRT Power-Off */
+    #ov-stage8 {
+      background: #070709;
+      padding: 12px;
+      justify-content: center;
+    }
+
+    #crt-screen {
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      transform-origin: center center;
+    }
+
+    .poster-frame {
+      flex: 1;
+      width: 100%;
+      background: #070709;
+      border: 8px solid #FF1457;
+      padding: 16px 15px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      color: #FFFFFF;
+    }
+
+    .poster-top-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 20, 87, 0.45);
+    }
+
+    .poster-q-pill {
+      padding: 3px 9px;
+      border-radius: 6px;
+      background: #FF1457;
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .poster-age-pill {
+      font-size: 12px;
+      font-weight: 800;
+      color: #FDA4AF;
+    }
+
+    .poster-center {
+      margin: auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      text-align: center;
+    }
+
+    .poster-headline {
+      font-size: clamp(28px, 8.6vw, 35px);
+      font-weight: 900;
+      color: #FF1457;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+
+    .poster-subcopy {
+      font-size: clamp(13px, 3.7vw, 14.5px);
+      font-weight: 700;
+      color: #F8FAFC;
+      line-height: 1.75;
+    }
+
+    .poster-log-box {
+      background: #12070B;
+      border: 1px solid #FF1457;
+      border-radius: 10px;
+      padding: 11px 12px;
+      text-align: left;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      line-height: 1.65;
+      color: #FFE4EC;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .log-err-tag {
+      color: #FF4D7D;
+      font-weight: 800;
+    }
+
+    /* =========================================================================
+       7. ACT 3: ABSOLUTE SILENCE & AWAKENING
+    ========================================================================= */
+    #ov-act3 {
+      background: #000000;
+      color: #FFFFFF;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .act3-inner {
+      padding: 24px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .act3-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      min-height: 220px;
+    }
+
+    .act3-line {
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+    .act3-line.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .btn-white-pill {
+      width: 100%;
+      min-height: 54px;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 999px;
+      background: #FFFFFF;
+      color: var(--navy);
+      font-size: clamp(14px, 3.9vw, 15.5px);
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 0 28px rgba(255, 255, 255, 0.25);
+      transition: transform 0.14s ease, opacity 0.5s ease;
+    }
+    .btn-white-pill:active {
+      transform: scale(0.98);
+    }
+
+    /* =========================================================================
+       8. ACT 4: CLEAN DAYTIME WHITE REPORT + TIME MACHINE + OFFICIAL BRIEFING
+    ========================================================================= */
+    #act-4 {
+      flex: 1;
+      background: var(--slate-bg);
+      color: var(--navy);
+      padding: 16px 14px 104px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .report-card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 22px;
+      padding: 18px 16px;
+      box-shadow: 0 4px 16px rgba(15, 39, 68, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--shinkin-green);
+      background: var(--shinkin-tint);
+      border: 1px solid rgba(0, 139, 94, 0.22);
+      padding: 4px 10px;
+      border-radius: 999px;
+      align-self: flex-start;
+    }
+
+    .type-title {
+      font-size: clamp(20px, 5.8vw, 24px);
+      font-weight: 900;
+      color: var(--navy);
+      line-height: 1.3;
+    }
+
+    /* Score Gauge */
+    .score-box {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .score-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .score-big {
+      font-family: var(--font-mono);
+      font-size: 32px;
+      font-weight: 900;
+      color: #E11D48;
+      line-height: 1;
+    }
+
+    .gauge-track {
+      position: relative;
+      height: 12px;
+      background: #E2E8F0;
+      border-radius: 999px;
+      overflow: visible;
+      margin: 14px 0 6px;
+    }
+
+    .gauge-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #F43F5E, #E11D48);
+      width: 0%;
+      transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .gauge-line-70 {
+      position: absolute;
+      left: 70%;
+      top: -6px;
+      bottom: -6px;
+      width: 2px;
+      background: var(--shinkin-green);
+    }
+
+    .gauge-label-70 {
+      position: absolute;
+      left: 70%;
+      top: -22px;
+      transform: translateX(-50%);
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--shinkin-dark);
+      white-space: nowrap;
+    }
+
+    .takeaway-text {
+      font-size: 13px;
+      color: #334155;
+      line-height: 1.65;
+    }
+
+    /* Section 2: Analytical Chart Simulator (Zero Payment Vibes) */
+    .chart-wrap {
+      background: #F8FBFA;
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 10px 10px 8px;
+    }
+
+    .chart-legend {
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 10.5px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      padding: 0 4px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .slider-panel {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .slider-readout {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .slider-yen {
+      font-family: var(--font-mono);
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--shinkin-green);
+    }
+
+    .equiv-badge {
+      display: inline-block;
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    input[type="range"].sim-range {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"].sim-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 3.5px solid var(--shinkin-green);
+      box-shadow: 0 3px 10px rgba(0, 139, 94, 0.3);
+      cursor: pointer;
+    }
+    input[type="range"].sim-range::-moz-range-thumb {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 3.5px solid var(--shinkin-green);
+      box-shadow: 0 3px 10px rgba(0, 139, 94, 0.3);
+      cursor: pointer;
+    }
+
+    .range-ticks {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: #64748B;
+      margin-top: 2px;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .stat-tile {
+      border-radius: 14px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .stat-tile.green {
+      background: var(--shinkin-tint);
+      border: 1px solid rgba(0, 139, 94, 0.32);
+    }
+    .stat-tile.navy {
+      background: #F1F5F9;
+      border: 1px solid #CBD5E1;
+    }
+
+    .stat-label {
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #475569;
+    }
+    .stat-value {
+      font-family: var(--font-mono);
+      font-size: clamp(16px, 4.5vw, 19px);
+      font-weight: 900;
+      color: var(--navy);
+      line-height: 1.25;
+    }
+    .stat-sub {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--shinkin-dark);
+    }
+
+    /* Section 3: HERO-LEVEL OFFICIAL CAMPUS BRIEFING */
+    #briefing-card {
+      background: #FFFFFF;
+      border: 3px solid var(--shinkin-green);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(0, 139, 94, 0.16);
+      scroll-margin-top: 66px;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .briefing-header {
+      background: linear-gradient(135deg, #008B5E, #006B48);
+      color: #FFFFFF;
+      padding: 18px 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .official-band {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      align-self: flex-start;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.34);
+      font-size: 10.5px;
+      font-weight: 800;
+    }
+
+    .briefing-title {
+      font-size: clamp(18.5px, 5.2vw, 21.5px);
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .briefing-sub {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #D1FAE5;
+      line-height: 1.55;
+    }
+
+    .briefing-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .reassure-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .reassure-badge {
+      background: var(--shinkin-tint);
+      border: 1px solid rgba(0, 139, 94, 0.25);
+      border-radius: 12px;
+      padding: 9px 10px;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .event-details-box {
+      background: #F8FAFC;
+      border: 1.5px solid #CBD5E1;
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .detail-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .detail-tag {
+      flex-shrink: 0;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #FFFFFF;
+      background: var(--navy);
+      margin-top: 2px;
+    }
+    .detail-tag.green {
+      background: var(--shinkin-green);
+    }
+
+    .agenda-list {
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .agenda-item {
+      padding: 10px 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      border-bottom: 1px solid #F1F5F9;
+      background: #FFFFFF;
+    }
+    .agenda-item:last-child {
+      border-bottom: none;
+    }
+
+    .agenda-time {
+      flex-shrink: 0;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 800;
+      color: var(--shinkin-dark);
+      background: var(--shinkin-tint);
+      border: 1px solid rgba(0, 139, 94, 0.22);
+      padding: 2px 7px;
+      border-radius: 6px;
+    }
+
+    .agenda-desc {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.45;
+    }
+
+    /* Slot Registration Area */
+    .slot-box {
+      background: #F0FDF9;
+      border: 2px solid rgba(0, 139, 94, 0.35);
+      border-radius: 18px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+
+    .slot-btn {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 14px;
+      border: 2px solid #CBD5E1;
+      background: #FFFFFF;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .slot-btn.active {
+      border-color: var(--shinkin-green);
+      box-shadow: 0 4px 12px rgba(0, 139, 94, 0.14);
+    }
+
+    .slot-radio {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid #CBD5E1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 900;
+      color: transparent;
+      flex-shrink: 0;
+    }
+    .slot-btn.active .slot-radio {
+      border-color: var(--shinkin-green);
+      background: var(--shinkin-green);
+      color: #FFFFFF;
+    }
+
+    .btn-shimmer-green {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      min-height: 56px;
+      padding: 14px 16px;
+      border: none;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #008B5E, #006B48);
+      color: #FFFFFF;
+      font-size: clamp(13.5px, 3.8vw, 15px);
+      font-weight: 900;
+      box-shadow: 0 10px 24px rgba(0, 139, 94, 0.34);
+      cursor: pointer;
+      transition: transform 0.13s ease;
+    }
+    .btn-shimmer-green:active {
+      transform: scale(0.985);
+    }
+    .btn-shimmer-green::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 70%;
+      height: 100%;
+      background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.32) 50%, transparent 80%);
+      animation: shimmerSweep 2.6s ease-in-out infinite;
+    }
+
+    /* Saved Pass Card */
+    .pass-card {
+      border: 2px solid var(--shinkin-green);
+      border-radius: 18px;
+      overflow: hidden;
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pass-head {
+      background: var(--shinkin-green);
+      color: #FFFFFF;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .pass-body {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 12.5px;
+    }
+
+    .btn-cal-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      min-height: 50px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: var(--shinkin-green);
+      color: #FFFFFF;
+      font-size: 13.5px;
+      font-weight: 900;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 0 6px 16px rgba(0, 139, 94, 0.24);
+    }
+
+    .btn-navy-solid {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 14px;
+      border: none;
+      border-radius: 14px;
+      background: var(--navy);
+      color: #FFFFFF;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn-text-link {
+      background: none;
+      border: none;
+      color: #64748B;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      cursor: pointer;
+      padding: 4px 6px;
+    }
+
+    .compliance-foot {
+      font-size: 10.5px;
+      color: #64748B;
+      line-height: 1.65;
+      padding: 2px 4px;
+    }
+
+    /* Sticky Bottom Bar (Act 4 Only, Hidden when Briefing Card is in view) */
+    #sticky-bar {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 430px;
+      z-index: 50;
+      background: #FFFFFF;
+      border-top: 3px solid var(--shinkin-green);
+      box-shadow: 0 -8px 24px rgba(15, 39, 68, 0.14);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+    #sticky-bar.bar-hidden {
+      transform: translate(-50%, 110%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .btn-sticky-go {
+      flex-shrink: 0;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 12px;
+      background: var(--shinkin-green);
+      color: #FFFFFF;
+      font-size: 12.5px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    /* Custom Toast (Zero alert()) */
+    #toast {
+      position: fixed;
+      top: 64px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 95;
+      background: var(--navy);
+      color: #FFFFFF;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: 999px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.26);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      max-width: 90%;
+      text-align: center;
+    }
+    #toast.show {
+      opacity: 1;
+    }
+
+    /* =========================================================================
+       9. CLEAN ANIMATIONS (Zero Blurry / Dual-Color Text Glitches)
+    ========================================================================= */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .anim-fade-up {
+      animation: fadeUp 0.34s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes microShake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-5px); }
+      40% { transform: translateX(5px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(3px); }
+    }
+    .anim-shake {
+      animation: microShake 0.32s linear;
+    }
+
+    @keyframes heartLeftCrack {
+      0%   { transform: translate(0, 0) rotate(0deg); }
+      100% { transform: translate(-13px, 10px) rotate(-20deg); }
+    }
+    @keyframes heartRightCrack {
+      0%   { transform: translate(0, 0) rotate(0deg); }
+      100% { transform: translate(13px, 10px) rotate(20deg); }
+    }
+    .heart-crack-l { animation: heartLeftCrack 0.48s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .heart-crack-r { animation: heartRightCrack 0.48s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+    @keyframes stampSlam {
+      0%   { opacity: 0; transform: scale(1.85) rotate(-5deg); }
+      70%  { opacity: 1; transform: scale(0.96) rotate(-1.5deg); }
+      100% { opacity: 1; transform: scale(1) rotate(-1.5deg); }
+    }
+    .anim-stamp {
+      animation: stampSlam 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes vignettePulse {
+      0%, 100% { box-shadow: inset 0 0 56px 14px rgba(0, 0, 0, 0.88); }
+      24%      { box-shadow: inset 0 0 88px 30px rgba(185, 16, 56, 0.65); }
+      52%      { box-shadow: inset 0 0 60px 16px rgba(0, 0, 0, 0.88); }
+      70%      { box-shadow: inset 0 0 78px 24px rgba(185, 16, 56, 0.48); }
+    }
+
+    @keyframes notifDrop {
+      from { opacity: 0; transform: translateY(-14px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Dramatic CRT Television Power-Off Collapse */
+    @keyframes crtPowerOff {
+      0%   { transform: scaleY(1) scaleX(1); filter: brightness(1); opacity: 1; }
+      38%  { transform: scaleY(0.014) scaleX(1.03); filter: brightness(3.8); opacity: 1; }
+      74%  { transform: scaleY(0.01) scaleX(0.04); filter: brightness(4.5); opacity: 1; }
+      100% { transform: scaleY(0) scaleX(0); filter: brightness(0); opacity: 0; }
+    }
+    .anim-crt-off {
+      animation: crtPowerOff 0.5s cubic-bezier(0.45, 0, 1, 1) forwards;
+    }
+
+    @keyframes shimmerSweep {
+      0%   { left: -120%; }
+      45%  { left: 140%; }
+      100% { left: 140%; }
+    }
+
+    @keyframes borderPulseGreen {
+      0%   { box-shadow: 0 0 0 0 rgba(0, 139, 94, 0.65); }
+      55%  { box-shadow: 0 0 0 12px rgba(0, 139, 94, 0.2); }
+      100% { box-shadow: 0 18px 40px rgba(0, 139, 94, 0.16); }
+    }
+    .pulse-briefing {
+      animation: borderPulseGreen 0.85s ease-out;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================================
+       MAIN 430px MOBILE APP SHELL
+  ========================================================================= -->
+  <div id="app-frame">
+
+    <!-- Persistent Top Bar -->
+    <header id="top-bar">
+      <div class="brand-group">
+        <div id="brand-icon" class="brand-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </div>
+        <div class="brand-texts">
+          <div id="hdr-title">モテ資産診断</div>
+          <div id="hdr-sub">〜あなたの将来はこうなるかも？〜</div>
+        </div>
+      </div>
+
+      <button id="btn-sound" type="button" aria-label="サウンドのオン・オフを切り替え">
+        <span id="sound-label">🔊 音 ON</span>
+      </button>
+    </header>
+
+    <!-- =======================================================================
+         ACT 1: BRIGHT, FRIENDLY DIAGNOSIS START SCREEN
+    ======================================================================= -->
+    <section id="act-1" class="anim-fade-up">
+      <div class="hero-card">
+        <div class="hero-blob-1"></div>
+        <div class="hero-blob-2"></div>
+
+        <div class="hero-inner">
+          <span class="pill-badge">● 大学生限定｜未来予測×恋愛マネー診断</span>
+
+          <!-- Clean Inline Diagnostic Illustration -->
+          <svg width="204" height="88" viewBox="0 0 204 88" fill="none" aria-hidden="true">
+            <rect x="4" y="4" width="196" height="80" rx="18" fill="#F8FFFC" stroke="#D1FAE5" stroke-width="1.5"/>
+            <path d="M26 62 L62 52 L98 44 L138 28 L174 18" stroke="#008B5E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="62" cy="52" r="4" fill="#008B5E"/>
+            <circle cx="98" cy="44" r="4" fill="#008B5E"/>
+            <circle cx="138" cy="28" r="4.5" fill="#FF5C8A"/>
+            <circle cx="174" cy="18" r="6" fill="#FF5C8A"/>
+            <rect x="26" y="18" width="64" height="10" rx="5" fill="#FFE4EC"/>
+            <rect x="26" y="33" width="44" height="7" rx="3.5" fill="#E2E8F0"/>
+          </svg>
+
+          <div class="hero-title-wrap">
+            <h1 class="hero-title">モテ資産診断</h1>
+            <p class="hero-subtitle">〜あなたの将来はこうなるかも？〜</p>
+          </div>
+
+          <p class="hero-desc jp-wrap">
+            全8問に答えるだけで、今のあなたの『モテ資産』と10年後のリアルな恋愛・結婚の未来をシミュレートします。
+          </p>
+
+          <div class="meta-chips">
+            <span class="meta-chip">⏱ 全8問・約1分</span>
+            <span class="meta-chip">✓ 登録不要</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button id="btn-start" type="button" class="btn-primary-pink">
+          <span>診断をスタートする →</span>
+        </button>
+        <p class="start-foot-note">※音声ONでよりリアルな未来予測を体験できます</p>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         ACT 2: 8-STAGE PROGRESSIVE REALITY-HORROR DIAGNOSIS (Q1–Q8)
+    ======================================================================= -->
+    <section id="act-2" class="hidden">
+      <!-- Consistent Top Diagnostic Progress Header -->
+      <div id="diag-progress-header">
+        <div class="prog-row">
+          <span id="q-num-badge">Q1 / 8</span>
+          <span id="age-forecast-badge">現在：21歳</span>
+        </div>
+        <div class="prog-segments" id="prog-segments">
+          <div class="prog-seg"></div>
+          <div class="prog-seg"></div>
+          <div class="prog-seg"></div>
+          <div class="prog-seg"></div>
+          <div class="prog-seg"></div>
+          <div class="prog-seg"></div>
+          <div class="prog-seg"></div>
+          <div class="prog-seg"></div>
+        </div>
+      </div>
+
+      <!-- Central Stage Content -->
+      <div id="diag-stage-body">
+        <!-- Optional Stage Insert (e.g., Stage 3 Future Simulation Mini-Window) -->
+        <div id="stage-extra-slot" class="hidden"></div>
+
+        <!-- Question & Choices Card -->
+        <div id="q-card">
+          <h2 id="q-text" class="jp-wrap"></h2>
+          <div id="q-choices"></div>
+        </div>
+
+        <!-- Optional Stage 7 Continue Button after 5 Notifications -->
+        <div id="stage7-next-wrap" class="hidden">
+          <button id="btn-s7-to-s8" type="button" class="btn-crimson">
+            最終予測（34歳）を確認する →
+          </button>
+        </div>
+      </div>
+
+      <p id="stage-hint-text"></p>
+    </section>
+
+    <!-- =======================================================================
+         ACT 4: CLEAN WHITE RESULT + TIME MACHINE + OFFICIAL CAMPUS BRIEFING
+    ======================================================================= -->
+    <section id="act-4" class="hidden anim-fade-up">
+
+      <!-- Section 1: Diagnosis Result Summary Card -->
+      <div class="report-card">
+        <span class="section-kicker">✓ 2026年へ帰還｜モテ資産診断レポート</span>
+
+        <div>
+          <p style="font-size:11.5px; font-weight:800; color:#64748B; margin-bottom:4px;">あなたの現在地タイプ</p>
+          <h2 id="res-type-name" class="type-title jp-wrap">先送りギリギリ予備軍</h2>
+        </div>
+
+        <div class="score-box">
+          <div class="score-head">
+            <span style="font-size:12px; font-weight:800; color:#334155;">現在のモテ資産スコア</span>
+            <div>
+              <span id="res-score-num" class="score-big">34</span>
+              <span style="font-size:12px; font-weight:800; color:#64748B;">点 / 100点</span>
+            </div>
+          </div>
+
+          <div class="gauge-track">
+            <div id="res-gauge-fill" class="gauge-fill"></div>
+            <div class="gauge-line-70"></div>
+            <div class="gauge-label-70">婚活・将来安心ライン（70点）</div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:700; color:#E11D48;">
+            <span id="res-gap-label">安心ラインまであと36点不足</span>
+            <span style="color:#64748B;">目標：70点以上</span>
+          </div>
+        </div>
+
+        <p id="res-takeaway" class="takeaway-text jp-wrap"></p>
+      </div>
+
+      <!-- Section 2: Non-Payment-Looking 20-Year Future Time-Machine Simulator -->
+      <div class="report-card">
+        <span class="section-kicker">📈 データ試算ツール（シミュレーション専用）</span>
+
+        <div>
+          <h2 style="font-size:clamp(18px,5vw,20.5px); font-weight:900; color:var(--navy); line-height:1.3;">
+            20年間の未来タイムマシン試算
+          </h2>
+          <p style="font-size:12px; color:#526277; margin-top:4px;">
+            毎月の積立イメージを動かして、20年後の差と34歳スコアの変化を確認してみよう。
+          </p>
+        </div>
+
+        <!-- Responsive SVG Dual-Curve Line Chart -->
+        <div class="chart-wrap">
+          <div class="chart-legend">
+            <span class="legend-item" style="color:#64748B;">
+              <span style="width:16px; height:0; border-top:2.5px dashed #94A3B8; display:inline-block;"></span>
+              銀行預金のみ（年利0.1%想定）
+            </span>
+            <span class="legend-item" style="color:#008B5E;">
+              <span style="width:16px; height:3px; border-radius:2px; background:#008B5E; display:inline-block;"></span>
+              今月からNISA積立（年利5%想定）
+            </span>
+          </div>
+
+          <svg id="sim-chart-svg" width="100%" viewBox="0 0 340 192" style="display:block; height:auto;" role="img" aria-label="20年間の資産推移比較グラフ">
+            <defs>
+              <linearGradient id="nisaAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#008B5E" stop-opacity="0.22"/>
+                <stop offset="100%" stop-color="#008B5E" stop-opacity="0.02"/>
+              </linearGradient>
+            </defs>
+            <g id="chart-grid"></g>
+            <path id="chart-area" fill="url(#nisaAreaGrad)" d=""></path>
+            <path id="chart-bank-path" fill="none" stroke="#94A3B8" stroke-width="2.4" stroke-dasharray="5 4" stroke-linecap="round" d=""></path>
+            <path id="chart-nisa-path" fill="none" stroke="#008B5E" stroke-width="3" stroke-linecap="round" d=""></path>
+            <g id="chart-endpoints"></g>
+          </svg>
+        </div>
+
+        <!-- Analytical Range Slider (¥1,000 – ¥50,000) -->
+        <div class="slider-panel">
+          <div class="slider-readout">
+            <span style="font-size:12.5px; font-weight:800; color:#334155;">毎月の積立シミュレーション額</span>
+            <div>
+              <span style="font-size:12px; font-weight:700; color:#475569;">月 </span>
+              <span id="sim-monthly-val" class="slider-yen">10,000</span>
+              <span style="font-size:12.5px; font-weight:800; color:var(--navy);"> 円</span>
+            </div>
+          </div>
+
+          <div>
+            <span id="sim-equiv-label" class="equiv-badge">月10,000円 ＝ ランチ約10回分 / バイト約1日分</span>
+          </div>
+
+          <input
+            id="sim-slider"
+            type="range"
+            min="1000"
+            max="50000"
+            step="1000"
+            value="10000"
+            class="sim-range"
+            aria-label="毎月の積立シミュレーション額（1,000円から50,000円）"
+          />
+
+          <div class="range-ticks">
+            <span>1,000円</span>
+            <span>25,000円</span>
+            <span>50,000円</span>
+          </div>
+        </div>
+
+        <!-- Clear Stat Cards Below Graph -->
+        <div class="stat-grid">
+          <div class="stat-tile green">
+            <span class="stat-label">20年後の差額</span>
+            <span id="sim-diff-val" class="stat-value">＋約169万円</span>
+            <span id="sim-totals-sub" class="stat-sub">預金242万 → 運用411万</span>
+          </div>
+
+          <div class="stat-tile navy">
+            <span class="stat-label">34歳時点のモテ資産スコア予測</span>
+            <span id="sim-score-shift" class="stat-value">34点 → 92点</span>
+            <span class="stat-sub">90点台へ逆転可能</span>
+          </div>
+        </div>
+
+        <p style="font-size:10.5px; color:#64748B; line-height:1.55;">
+          ※年利5%・年利0.1%はいずれも将来の運用成果を保証するものではなく、仮定に基づく試算シミュレーションです。本画面で決済や契約が発生することはありません。
+        </p>
+      </div>
+
+      <!-- Section 3: HERO-LEVEL OFFICIAL CAMPUS BRIEFING RESERVATION -->
+      <article id="briefing-card">
+        <div class="briefing-header">
+          <span class="official-band">🏛 埼玉縣信用金庫 × 大宮キャンパス 公式学内企画</span>
+          <h2 class="briefing-title jp-wrap">大学生のための『はじめてのNISA』30分ミニ説明会</h2>
+          <p class="briefing-sub jp-wrap">さっき見た『34歳の未来』を変えるのに必要なのは、たった30分。</p>
+        </div>
+
+        <div class="briefing-body">
+          <!-- 4 Clean Reassurance Badges -->
+          <div class="reassure-grid">
+            <div class="reassure-badge"><span style="color:#008B5E;">✓</span>参加無料</div>
+            <div class="reassure-badge"><span style="color:#008B5E;">✓</span>勧誘一切なし</div>
+            <div class="reassure-badge"><span style="color:#008B5E;">✓</span>知識ゼロ歓迎</div>
+            <div class="reassure-badge"><span style="color:#008B5E;">✓</span>持ち物不要・途中退室OK</div>
+          </div>
+
+          <!-- Event Details Box -->
+          <div class="event-details-box">
+            <div class="detail-row">
+              <span class="detail-tag">日時</span>
+              <div>
+                <p style="font-size:15px; font-weight:900; color:var(--navy); line-height:1.3;">12月22日（火）</p>
+                <p style="font-size:12.5px; font-weight:700; color:#334155; margin-top:3px;">
+                  ① 12:40〜13:10（昼休み）<br>
+                  ② 17:10〜17:40（5限後）
+                </p>
+              </div>
+            </div>
+
+            <div class="detail-row" style="padding-top:10px; border-top:1px solid #E2E8F0;">
+              <span class="detail-tag green">場所</span>
+              <div>
+                <p style="font-size:14.5px; font-weight:900; color:var(--navy); line-height:1.35;">
+                  大宮キャンパス 2号館 1階 2103教室
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Compact 3-Step 30-Min Agenda -->
+          <div>
+            <p style="font-size:12.5px; font-weight:900; color:var(--navy); margin-bottom:8px;">
+              当日の30分プログラム
+            </p>
+            <div class="agenda-list">
+              <div class="agenda-item">
+                <span class="agenda-time">00-05分</span>
+                <p class="agenda-desc">ポスター＆診断の裏話（なぜ今52%が運用力を見るのか）</p>
+              </div>
+              <div class="agenda-item">
+                <span class="agenda-time">05-20分</span>
+                <p class="agenda-desc">バイト代から始める「失敗しないNISAの超きほん」</p>
+              </div>
+              <div class="agenda-item">
+                <span class="agenda-time">20-30分</span>
+                <p class="agenda-desc">なんでも質問タイム（希望者のみ・押し売りなし）</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Zero-Friction 1-Tap Attendance Registration (No Personal Info Inputs) -->
+          <div id="slot-picker-view" class="slot-box">
+            <p style="font-size:12.5px; font-weight:900; color:var(--shinkin-dark);">
+              ⚡ 名前・メアド入力不要｜参加したい回をタップ
+            </p>
+
+            <button type="button" class="slot-btn active" data-slot="noon">
+              <div>
+                <p style="font-size:14px; font-weight:900; color:var(--navy);">① 12/22(火) 12:40〜13:10</p>
+                <p style="font-size:11.5px; font-weight:700; color:#008B5E; margin-top:2px;">昼休み回・ごはんを食べたあとそのままOK</p>
+              </div>
+              <span class="slot-radio">✓</span>
+            </button>
+
+            <button type="button" class="slot-btn" data-slot="evening">
+              <div>
+                <p style="font-size:14px; font-weight:900; color:var(--navy);">② 12/22(火) 17:10〜17:40</p>
+                <p style="font-size:11.5px; font-weight:700; color:#64748B; margin-top:2px;">5限後・放課後にサクッと30分</p>
+              </div>
+              <span class="slot-radio">✓</span>
+            </button>
+
+            <button id="btn-create-memo" type="button" class="btn-shimmer-green">
+              この回の参加メモを作成する（入力不要）
+            </button>
+          </div>
+
+          <!-- Saved Pass Card (Revealed on 1-Tap Registration or Restored from localStorage) -->
+          <div id="saved-pass-view" class="hidden" style="display:flex; flex-direction:column; gap:12px;">
+            <div class="pass-card">
+              <div class="pass-head">
+                <div>
+                  <p style="font-size:10px; font-weight:700; color:#D1FAE5;">埼玉縣信用金庫 × 大宮キャンパス</p>
+                  <p style="font-size:14.5px; font-weight:900;">学内説明会・参加メモ（保存完了）</p>
+                </div>
+                <span style="padding:3px 9px; border-radius:999px; background:#FFFFFF; color:#008B5E; font-size:10.5px; font-weight:900;">
+                  保存済
+                </span>
+              </div>
+
+              <div class="pass-body">
+                <div style="background:var(--shinkin-tint); border:1px solid rgba(0,139,94,0.25); border-radius:12px; padding:10px 12px;">
+                  <p style="font-size:10.5px; font-weight:800; color:var(--shinkin-dark);">選択した日時</p>
+                  <p id="pass-datetime" style="font-size:15px; font-weight:900; color:var(--navy); margin-top:2px;">
+                    12月22日（火）① 12:40〜13:10（昼休み）
+                  </p>
+                </div>
+
+                <div style="display:grid; grid-template-columns:64px 1fr; gap:6px; align-items:start;">
+                  <span style="font-size:11px; font-weight:800; color:#64748B;">会場</span>
+                  <span style="font-weight:900; color:var(--navy);">大宮キャンパス 2号館 1階 2103教室</span>
+                </div>
+
+                <div style="display:grid; grid-template-columns:64px 1fr; gap:6px; align-items:start; padding-top:8px; border-top:1px solid #F1F5F9;">
+                  <span style="font-size:11px; font-weight:800; color:#64748B;">診断結果</span>
+                  <span id="pass-diag-type" style="font-weight:800; color:#E11D48;">先送りギリギリ予備軍</span>
+                </div>
+              </div>
+            </div>
+
+            <a id="btn-gcal" href="#" target="_blank" rel="noopener noreferrer" class="btn-cal-link">
+              📅 Googleカレンダーに1タップ登録
+            </a>
+
+            <button id="btn-share-pass" type="button" class="btn-navy-solid">
+              友達にもこの診断を送る（結果コピー）
+            </button>
+
+            <div style="display:flex; justify-content:center; gap:14px; align-items:center;">
+              <button id="btn-edit-slot" type="button" class="btn-text-link">時間帯を変更する</button>
+              <span style="color:#CBD5E1;">|</span>
+              <button id="btn-reset-pass" type="button" class="btn-text-link">もう一度最初から体験する</button>
+            </div>
+          </div>
+
+          <!-- Pre-save Share & Reset -->
+          <div id="pre-pass-actions" style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+            <button id="btn-share-pre" type="button" class="btn-navy-solid" style="background:#F1F5F9; color:var(--navy);">
+              友達にもこの診断を送る（結果コピー）
+            </button>
+            <button id="btn-reset-pre" type="button" class="btn-text-link">
+              もう一度最初から体験する
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Official Compliance Footer -->
+      <footer class="compliance-foot">
+        <p style="font-weight:800; color:#475569;">主催協力：埼玉縣信用金庫（登録金融機関 関東財務局長（登金）第202号 / 加入協会：日本証券業協会）</p>
+        <p>本ミニ説明会は大学生向けの金融知識啓発を目的としており、参加無料・無理な勧誘は一切行いません。投資信託等の金融商品には価格変動リスクがあり、元本を保証するものではありません。</p>
+      </footer>
+    </section>
+  </div>
+
+  <!-- =========================================================================
+       430px-CONTAINED FIXED OVERLAYS (Zero Clipping, Zero Blurry Glitch Text)
+  ========================================================================= -->
+
+  <!-- Stage 2: 0.65s Future Forecast Log Flash -->
+  <div id="ov-stage2-flash" class="frame-overlay-box hidden" aria-live="assertive">
+    <div class="flash-log-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; font-family:var(--font-mono); font-size:11px; font-weight:800; color:#FDA4AF;">
+        <span>FUTURE FORECAST ENGINE</span>
+        <span style="padding:2px 7px; border-radius:4px; background:#FF1457; color:#FFFFFF;">WARNING</span>
+      </div>
+      <p style="font-size:13px; font-weight:800; color:#FF4D7D;">【未来予測ログ｜26歳時点】</p>
+      <div style="background:#070709; border:1px solid #FF1457; border-radius:10px; padding:12px; display:flex; flex-direction:column; gap:6px; font-family:var(--font-mono);">
+        <p style="font-size:14px; font-weight:800; color:#FFFFFF;">普通預金残高：¥38,420</p>
+        <p style="font-size:14px; font-weight:800; color:#FDA4AF;">クレジット引落予定：¥74,200</p>
+        <p style="font-size:13.5px; font-weight:900; color:#FF1457; padding-top:4px; border-top:1px solid rgba(255,20,87,0.35);">
+          — 残高不足の警告
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stage 4: 52% Filter Interception Modal -->
+  <div id="ov-stage4-modal" class="frame-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="s4-modal-title">
+    <div style="width:100%; max-width:430px; padding:16px;">
+      <div id="s4-modal-card" class="alert-modal-card anim-fade-up">
+        <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.12); padding-bottom:10px;">
+          <span id="s4-modal-title" style="font-size:13px; font-weight:900; color:#FF4D7D;">【診断データ照合アラート】</span>
+          <span style="font-family:var(--font-mono); font-size:10.5px; color:#94A3B8;">AGE 28 CHECK</span>
+        </div>
+
+        <p style="font-size:14px; font-weight:700; color:#F8FAFC; line-height:1.7;" class="jp-wrap">
+          婚活中の<span style="color:#FF4D7D; font-size:17px; font-weight:900;">52%</span>が『収入より資産運用能力』を重視（日経新聞・IBJ調査）。<br>
+          現在の設定<strong style="color:#FFFFFF;">『資産運用：未経験』</strong>が、28歳時点の結婚相手候補フィルターに抵触しました。
+        </p>
+
+        <div class="modal-btn-row">
+          <button id="btn-s4-accept" type="button" class="btn-crimson">
+            現実を受け入れて続ける
+          </button>
+          <button id="btn-s4-ignore" type="button" class="btn-ghost-dark">
+            フィルターを無視する
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stage 6: Candidate Countdown + Heart Crack Assessment Overlay -->
+  <div id="ov-stage6-assess" class="frame-overlay-box hidden">
+    <div class="assess-card anim-fade-up">
+      <span style="font-family:var(--font-mono); font-size:11px; font-weight:800; color:#94A3B8; letter-spacing:0.06em;">
+        Q6 / 8 ｜ 予測：31歳
+      </span>
+
+      <p style="font-size:14px; font-weight:800; color:#E2E8F0; line-height:1.5;">
+        31歳時点｜あなたを結婚相手候補に残した人数
+      </p>
+
+      <div id="s6-count-num" class="countdown-num">142<span style="font-size:20px; margin-left:4px;">人</span></div>
+
+      <!-- Clean SVG Heart that Cracks in Two -->
+      <svg width="68" height="62" viewBox="0 0 68 62" fill="none" style="overflow:visible;" aria-hidden="true">
+        <g id="s6-heart-l">
+          <path d="M34 55 L13 35 C6 28 6 17 14 11 C21 6 29 9 34 16 L31 28 L35 40 L34 55 Z" fill="#FF1457"/>
+        </g>
+        <g id="s6-heart-r">
+          <path d="M34 55 L35 40 L31 28 L34 16 C39 9 47 6 54 11 C62 17 62 28 55 35 L34 55 Z" fill="#FF1457"/>
+        </g>
+      </svg>
+
+      <div id="s6-stamp" class="stamp-box hidden">
+        判定：候補対象外（資産準備不足）
+      </div>
+
+      <button id="btn-s6-next" type="button" class="btn-crimson hidden" style="margin-top:4px;">
+        次へ進む →
+      </button>
+    </div>
+  </div>
+
+  <!-- Stage 7: Heartbeat Vignette + Top OS Notification Tray -->
+  <div id="stage7-vignette" class="hidden" aria-hidden="true"></div>
+  <div id="s7-notif-tray" class="hidden" aria-live="polite"></div>
+
+  <!-- Stage 8: Poster-Linked Climax (8px #FF1457 Border) + CRT Power-Off -->
+  <div id="ov-stage8" class="frame-overlay-box hidden">
+    <div id="crt-screen">
+      <div class="poster-frame">
+        <div class="poster-top-meta">
+          <span class="poster-q-pill">Q8 / 8</span>
+          <span class="poster-age-pill">予測：34歳｜最終判定</span>
+        </div>
+
+        <div class="poster-center">
+          <h2 class="poster-headline jp-wrap">君は、それでいいのカ？</h2>
+
+          <p class="poster-subcopy jp-wrap">
+            34歳・資産運用未経験。<br>
+            物価は上がり続け、貯金だけでは守れない未来。<br>
+            このまま最終結果を受け入れますか？
+          </p>
+
+          <!-- Crisp Terminal Warning Log Box (Revealed on 1st & 2nd tap) -->
+          <div id="s8-log-box" class="poster-log-box hidden"></div>
+        </div>
+
+        <div>
+          <button id="btn-s8-retry" type="button" class="btn-crimson" style="min-height:56px; font-size:15.5px;">
+            未来をやり直す
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Act 3: Absolute Silence & Awakening -->
+  <div id="ov-act3" class="frame-overlay-box hidden">
+    <div class="act3-inner">
+      <div class="act3-lines">
+        <p id="a3-1" class="act3-line" style="font-size:17px; color:#CBD5E1;">……大丈夫。</p>
+        <p id="a3-2" class="act3-line" style="font-size:16px; color:#E2E8F0;">今の画面は、すべてシミュレーション。</p>
+        <p id="a3-3" class="act3-line" style="font-size:19px; color:#FFFFFF;">今はまだ、2026年。</p>
+        <p id="a3-4" class="act3-line" style="font-size:20px; font-weight:900; color:#FFFFFF;">あなたはまだ、大学生だ。</p>
+        <p id="a3-5" class="act3-line" style="font-size:clamp(24px,7vw,29px); font-weight:900; color:#FF1457; margin-top:6px;">今なら、まだ間に合う。</p>
+      </div>
+
+      <button id="btn-to-act4" type="button" class="btn-white-pill hidden">
+        現実に戻って『逆転プラン』を見る →
+      </button>
+
+      <p id="a3-hint" style="text-align:center; font-family:var(--font-mono); font-size:10.5px; color:#64748B;">
+        画面タップでスキップ
+      </p>
+    </div>
+  </div>
+
+  <!-- Sticky Bottom Bar (Act 4 Only — Auto-hides when Briefing Card enters viewport) -->
+  <div id="sticky-bar" class="hidden">
+    <div style="min-width:0;">
+      <p style="font-size:10px; font-weight:900; color:#008B5E; line-height:1.1;">埼玉縣信用金庫 公式学内企画</p>
+      <p style="font-size:12px; font-weight:900; color:var(--navy); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;">
+        📅 12/22(火) 30分NISA説明会｜2103教室
+      </p>
+    </div>
+    <button id="btn-sticky-scroll" type="button" class="btn-sticky-go">
+      参加詳細へ ↓
+    </button>
+  </div>
+
+  <!-- Custom Toast Notification (No alert()) -->
+  <div id="toast" role="status" aria-live="polite">コピーしました</div>
+
+  <!-- Hidden Textarea for iFrame-safe Clipboard Copy -->
+  <textarea id="copy-buffer" class="sr-only" aria-hidden="true"></textarea>
+
+  <script>
+    /**
+     * =========================================================================
+     * 1. WEB AUDIO API SOUND ENGINE (Zero External Audio Files)
+     * =========================================================================
+     */
+    const SoundEngine = (() => {
+      let ctx = null;
+      let enabled = true;
+      let droneOsc = null;
+      let droneGain = null;
+      let hbTimer = null;
+      let hbInterval = 980;
+
+      function ensureCtx() {
+        if (!enabled) return null;
+        try {
+          if (!ctx) {
+            const AC = window.AudioContext || window.webkitAudioContext;
+            if (!AC) return null;
+            ctx = new AC();
+          }
+          if (ctx.state === 'suspended') {
+            ctx.resume();
+          }
+          return ctx;
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function playTone(freq, delay, duration, type, vol, endFreq) {
+        const ac = ensureCtx();
+        if (!ac) return;
+        try {
+          const t = ac.currentTime + delay;
+          const osc = ac.createOscillator();
+          const gain = ac.createGain();
+          osc.type = type || 'sine';
+          osc.frequency.setValueAtTime(freq, t);
+          if (typeof endFreq === 'number') {
+            osc.frequency.exponentialRampToValueAtTime(Math.max(24, endFreq), t + duration);
+          }
+          gain.gain.setValueAtTime(0.0001, t);
+          gain.gain.exponentialRampToValueAtTime(vol || 0.07, t + 0.012);
+          gain.gain.exponentialRampToValueAtTime(0.0001, t + duration);
+          osc.connect(gain);
+          gain.connect(ac.destination);
+          osc.start(t);
+          osc.stop(t + duration + 0.03);
+        } catch (e) {}
+      }
+
+      function playStaticBurst(duration, vol) {
+        const ac = ensureCtx();
+        if (!ac) return;
+        try {
+          const len = Math.floor(ac.sampleRate * duration);
+          const buf = ac.createBuffer(1, len, ac.sampleRate);
+          const ch = buf.getChannelData(0);
+          for (let i = 0; i < len; i++) {
+            ch[i] = (Math.random() * 2 - 1) * (1 - (i / len) * 0.45);
+          }
+          const src = ac.createBufferSource();
+          src.buffer = buf;
+          const gain = ac.createGain();
+          gain.gain.setValueAtTime(vol || 0.12, ac.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + duration);
+          src.connect(gain);
+          gain.connect(ac.destination);
+          src.start();
+        } catch (e) {}
+      }
+
+      function cheerfulChime() {
+        playTone(523.25, 0, 0.14, 'sine', 0.07);
+        playTone(659.25, 0.06, 0.16, 'sine', 0.07);
+        playTone(783.99, 0.12, 0.22, 'triangle', 0.06);
+      }
+
+      function softClick() {
+        playTone(640, 0, 0.05, 'sine', 0.045, 720);
+      }
+
+      function flashImpact() {
+        playStaticBurst(0.32, 0.13);
+        playTone(105, 0, 0.36, 'sawtooth', 0.11, 36);
+        playTone(58, 0, 0.4, 'sine', 0.15, 28);
+      }
+
+      function eerieLowChime() {
+        playTone(466.16, 0, 0.18, 'triangle', 0.055, 448);
+        playTone(329.63, 0.09, 0.28, 'sine', 0.05, 315);
+      }
+
+      function alertBeep() {
+        playTone(860, 0, 0.07, 'square', 0.038);
+        playTone(620, 0.09, 0.11, 'square', 0.042);
+      }
+
+      function hijackBeep() {
+        playTone(220, 0, 0.05, 'square', 0.045, 140);
+        playTone(780, 0.04, 0.04, 'square', 0.035, 420);
+      }
+
+      function metalTick() {
+        playTone(1480, 0, 0.03, 'square', 0.038, 760);
+        playTone(390, 0, 0.035, 'triangle', 0.045, 190);
+      }
+
+      function heartCrackSound() {
+        playTone(554.37, 0, 0.24, 'sawtooth', 0.065, 260);
+        playTone(587.33, 0.02, 0.26, 'sawtooth', 0.065, 220);
+        playStaticBurst(0.18, 0.09);
+      }
+
+      function notifPing(idx) {
+        const offset = (idx || 0) * 14;
+        playTone(1046.5 - offset, 0, 0.075, 'sine', 0.075);
+        playTone(1396.9 - offset, 0.07, 0.16, 'sine', 0.07);
+      }
+
+      function startDrone55() {
+        const ac = ensureCtx();
+        if (!ac) return;
+        stopDrone();
+        try {
+          droneOsc = ac.createOscillator();
+          droneGain = ac.createGain();
+          droneOsc.type = 'sine';
+          droneOsc.frequency.setValueAtTime(55, ac.currentTime);
+          droneGain.gain.setValueAtTime(0.0001, ac.currentTime);
+          droneGain.gain.linearRampToValueAtTime(0.05, ac.currentTime + 0.55);
+          droneOsc.connect(droneGain);
+          droneGain.connect(ac.destination);
+          droneOsc.start();
+        } catch (e) {}
+      }
+
+      function stopDrone() {
+        if (droneGain && ctx) {
+          try {
+            droneGain.gain.cancelScheduledValues(ctx.currentTime);
+            droneGain.gain.setValueAtTime(0.0001, ctx.currentTime);
+          } catch (e) {}
+        }
+        if (droneOsc) {
+          try { droneOsc.stop(); } catch (e) {}
+          droneOsc = null;
+          droneGain = null;
+        }
+      }
+
+      function startHeartbeat() {
+        stopHeartbeat();
+        hbInterval = 960;
+        const beat = () => {
+          if (!enabled) return;
+          playTone(72, 0, 0.13, 'sine', 0.15, 40);
+          playTone(64, 0.17, 0.15, 'sine', 0.12, 36);
+          hbInterval = Math.max(520, hbInterval - 65);
+          hbTimer = setTimeout(beat, hbInterval);
+        };
+        beat();
+      }
+
+      function stopHeartbeat() {
+        if (hbTimer) {
+          clearTimeout(hbTimer);
+          hbTimer = null;
+        }
+      }
+
+      function deepThud() {
+        playTone(90, 0, 0.55, 'sine', 0.2, 28);
+      }
+
+      function crtCutOff() {
+        stopAllAmbient();
+        playTone(2100, 0, 0.08, 'sine', 0.1, 60);
+        playStaticBurst(0.05, 0.11);
+      }
+
+      function stopAllAmbient() {
+        stopHeartbeat();
+        stopDrone();
+      }
+
+      function daytimeRelief() {
+        stopAllAmbient();
+        playTone(523.25, 0, 0.22, 'sine', 0.065);
+        playTone(659.25, 0.08, 0.24, 'sine', 0.065);
+        playTone(783.99, 0.16, 0.3, 'sine', 0.07);
+        playTone(1046.5, 0.24, 0.36, 'triangle', 0.055);
+      }
+
+      function toggle() {
+        enabled = !enabled;
+        if (!enabled) {
+          stopAllAmbient();
+        } else {
+          ensureCtx();
+          softClick();
+        }
+        return enabled;
+      }
+
+      return {
+        ensureCtx,
+        cheerfulChime,
+        softClick,
+        flashImpact,
+        eerieLowChime,
+        alertBeep,
+        hijackBeep,
+        metalTick,
+        heartCrackSound,
+        notifPing,
+        startDrone55,
+        stopDrone,
+        startHeartbeat,
+        stopHeartbeat,
+        deepThud,
+        crtCutOff,
+        stopAllAmbient,
+        daytimeRelief,
+        toggle
+      };
+    })();
+
+    /**
+     * =========================================================================
+     * 2. APPLICATION STATE & STAGE DEFINITIONS
+     * =========================================================================
+     */
+    const STORAGE_KEY = 'mote_asset_campus_memo_v3';
+
+    const AGE_BADGES = {
+      1: '現在：21歳',
+      2: '予測：23歳',
+      3: '予測：25歳',
+      4: '予測：28歳',
+      5: '予測：30歳',
+      6: '予測：31歳',
+      7: '予測：33歳',
+      8: '予測：34歳'
+    };
+
+    const DIAG_TYPES = [
+      {
+        maxScore: 34,
+        name: '先送りギリギリ予備軍',
+        takeaway: '「社会人になってから考えよう」が口ぐせになりやすく、物価高と結婚適齢期が重なった時に一番焦りやすいタイプ。まずは大学生の今、仕組みを知るだけで大きく逆転できます。'
+      },
+      {
+        maxScore: 46,
+        name: '今だけ全力エンジョイ型',
+        takeaway: '今の楽しさや人付き合いを大切にできる魅力的なタイプ。ただし貯蓄や運用が後回しになりやすく、将来パートナーと本気で向き合う場面で資金面の不安が出やすい傾向があります。'
+      },
+      {
+        maxScore: 57,
+        name: 'ただの貯金箱ストップ型',
+        takeaway: 'コツコツ貯める真面目さは大きな強み。しかし銀行預金だけでは物価上昇に追いつけず、婚活市場の52%が注目する「資産を育てる力」で一歩出遅れてしまう惜しい状態です。'
+      },
+      {
+        maxScore: 100,
+        name: 'あと一歩のポテンシャル型',
+        takeaway: '将来への危機感も堅実さも備わっています。あとは「知識を実際の行動に変える」だけ。学生のうちに少額からNISAの基本を押さえれば、20代後半で圧倒的な安心感を手に入れられます。'
+      }
+    ];
+
+    const state = {
+      stage: 0,
+      locked: false,
+      points: 22, // Base 22, maxes out cleanly within 22–68
+      timers: [],
+      s5Hijacked: false,
+      s7Answered: false,
+      s7NotifCount: 0,
+      s8TapCount: 0,
+      act3RunId: 0,
+      act3Done: false,
+      finalScore: 34,
+      finalType: DIAG_TYPES[0],
+      monthlyYen: 10000,
+      selectedSlot: 'noon',
+      savedMemo: false,
+      briefingObserver: null
+    };
+
+    function schedule(fn, ms) {
+      const id = setTimeout(fn, ms);
+      state.timers.push(id);
+      return id;
+    }
+
+    function clearAllTimers() {
+      state.timers.forEach(id => clearTimeout(id));
+      state.timers = [];
+    }
+
+    /**
+     * =========================================================================
+     * 3. TOAST & IFRAME-SAFE CLIPBOARD COPY (No alert/confirm)
+     * =========================================================================
+     */
+    let toastTimer = null;
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+    }
+
+    function copyToClipboard(text, message) {
+      const buf = document.getElementById('copy-buffer');
+      buf.value = text;
+      buf.select();
+      buf.setSelectionRange(0, 99999);
+      try {
+        document.execCommand('copy');
+        showToast(message || 'コピーしました');
+      } catch (e) {
+        showToast('コピーに失敗しました');
+      }
+    }
+
+    /**
+     * =========================================================================
+     * 4. PROGRESSIVE VISUAL THEME ENGINE (Q1 Bright → Q7 Dark Charcoal)
+     * =========================================================================
+     */
+    function applyDiagnosticTheme(stage) {
+      const frame = document.getElementById('app-frame');
+      const topBar = document.getElementById('top-bar');
+      const brandIcon = document.getElementById('brand-icon');
+      const hdrTitle = document.getElementById('hdr-title');
+      const hdrSub = document.getElementById('hdr-sub');
+      const sndBtn = document.getElementById('btn-sound');
+      const qNum = document.getElementById('q-num-badge');
+      const ageBadge = document.getElementById('age-forecast-badge');
+      const qCard = document.getElementById('q-card');
+      const qText = document.getElementById('q-text');
+      const segs = document.querySelectorAll('#prog-segments .prog-seg');
+
+      qNum.textContent = `Q${stage} / 8`;
+      ageBadge.textContent = AGE_BADGES[stage] || '';
+
+      // Update 8-segment progress bar
+      segs.forEach((seg, idx) => {
+        const filled = idx < stage;
+        if (stage <= 2) {
+          seg.style.backgroundColor = filled ? '#FF5C8A' : '#FDE2E8';
+        } else if (stage === 3) {
+          seg.style.backgroundColor = filled ? '#64748B' : '#CBD5E1';
+        } else {
+          seg.style.backgroundColor = filled ? '#E11D48' : 'rgba(255,255,255,0.16)';
+        }
+      });
+
+      if (stage <= 2) {
+        document.body.style.backgroundColor = '#E2E8F0';
+        frame.style.backgroundColor = '#FFF8FA';
+        topBar.style.background = 'rgba(255, 248, 250, 0.94)';
+        topBar.style.borderBottomColor = 'rgba(255, 92, 138, 0.14)';
+        brandIcon.style.background = 'linear-gradient(135deg, #FF5C8A, #FF8FAB)';
+        hdrTitle.style.color = '#0F2744';
+        hdrSub.style.color = '#64748B';
+        hdrSub.textContent = '〜あなたの将来はこうなるかも？〜';
+        sndBtn.style.background = '#FFFFFF';
+        sndBtn.style.color = '#334155';
+        sndBtn.style.borderColor = '#FECDD3';
+
+        qNum.style.background = '#FFFFFF';
+        qNum.style.color = '#E11D48';
+        qNum.style.borderColor = '#FECDD3';
+        ageBadge.style.background = '#ECFDF5';
+        ageBadge.style.color = '#047857';
+        ageBadge.style.borderColor = '#A7F3D0';
+
+        qCard.style.backgroundColor = '#FFFFFF';
+        qCard.style.borderColor = '#FFE4EC';
+        qText.style.color = '#0F2744';
+      } else if (stage === 3) {
+        // Desaturated cool-gray
+        document.body.style.backgroundColor = '#CBD5E1';
+        frame.style.backgroundColor = '#EAEFF4';
+        topBar.style.background = 'rgba(234, 239, 244, 0.95)';
+        topBar.style.borderBottomColor = '#CBD5E1';
+        brandIcon.style.background = '#64748B';
+        hdrTitle.style.color = '#1E293B';
+        hdrSub.style.color = '#64748B';
+        hdrSub.textContent = '未来シミュレーション進行中';
+        sndBtn.style.background = '#FFFFFF';
+        sndBtn.style.color = '#334155';
+        sndBtn.style.borderColor = '#CBD5E1';
+
+        qNum.style.background = '#334155';
+        qNum.style.color = '#FFFFFF';
+        qNum.style.borderColor = '#334155';
+        ageBadge.style.background = '#E2E8F0';
+        ageBadge.style.color = '#334155';
+        ageBadge.style.borderColor = '#CBD5E1';
+
+        qCard.style.backgroundColor = '#FFFFFF';
+        qCard.style.borderColor = '#CBD5E1';
+        qText.style.color = '#1E293B';
+      } else if (stage === 4) {
+        // Cold slate + warning crimson bar
+        document.body.style.backgroundColor = '#0F172A';
+        frame.style.backgroundColor = '#1E2533';
+        topBar.style.background = 'rgba(30, 37, 51, 0.95)';
+        topBar.style.borderBottomColor = 'rgba(255, 255, 255, 0.1)';
+        brandIcon.style.background = '#E11D48';
+        hdrTitle.style.color = '#F8FAFC';
+        hdrSub.style.color = '#FDA4AF';
+        hdrSub.textContent = '未来予測：28歳データ照合中';
+        sndBtn.style.background = 'rgba(255,255,255,0.08)';
+        sndBtn.style.color = '#E2E8F0';
+        sndBtn.style.borderColor = 'rgba(255,255,255,0.16)';
+
+        qNum.style.background = '#E11D48';
+        qNum.style.color = '#FFFFFF';
+        qNum.style.borderColor = '#E11D48';
+        ageBadge.style.background = 'rgba(225, 29, 72, 0.2)';
+        ageBadge.style.color = '#FDA4AF';
+        ageBadge.style.borderColor = 'rgba(225, 29, 72, 0.5)';
+
+        qCard.style.backgroundColor = '#252E3F';
+        qCard.style.borderColor = '#38465E';
+        qText.style.color = '#FFFFFF';
+      } else {
+        // Stage 5, 6, 7: Dark Charcoal (#141418 -> #0B0B0F)
+        const bg = stage >= 6 ? '#0C0D12' : '#141418';
+        document.body.style.backgroundColor = '#050507';
+        frame.style.backgroundColor = bg;
+        topBar.style.background = 'rgba(14, 15, 20, 0.95)';
+        topBar.style.borderBottomColor = 'rgba(255, 20, 87, 0.28)';
+        brandIcon.style.background = '#FF1457';
+        hdrTitle.style.color = '#F8FAFC';
+        hdrSub.style.color = '#FF4D7D';
+        hdrSub.textContent = stage === 7 ? '警告：修復限界ライン接近' : '未来予測：現実データ侵食中';
+        sndBtn.style.background = 'rgba(255,255,255,0.06)';
+        sndBtn.style.color = '#E2E8F0';
+        sndBtn.style.borderColor = 'rgba(255,255,255,0.14)';
+
+        qNum.style.background = '#FF1457';
+        qNum.style.color = '#FFFFFF';
+        qNum.style.borderColor = '#FF1457';
+        ageBadge.style.background = '#260B13';
+        ageBadge.style.color = '#FDA4AF';
+        ageBadge.style.borderColor = '#FF1457';
+
+        qCard.style.backgroundColor = '#191B22';
+        qCard.style.borderColor = stage >= 6 ? 'rgba(255, 20, 87, 0.42)' : '#2C303D';
+        qText.style.color = '#FFFFFF';
+      }
+    }
+
+    /**
+     * =========================================================================
+     * 5. RENDER & CONTROL STAGES Q1 THROUGH Q8
+     * =========================================================================
+     */
+    function renderStandardChoices(questionText, choices, skinClass, onSelect) {
+      const qCard = document.getElementById('q-card');
+      qCard.classList.remove('anim-fade-up');
+      void qCard.offsetWidth;
+      qCard.classList.add('anim-fade-up');
+
+      document.getElementById('q-text').textContent = questionText;
+      const box = document.getElementById('q-choices');
+      box.innerHTML = '';
+
+      choices.forEach((item) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `choice-btn ${skinClass || ''}`.trim();
+        btn.innerHTML = `<span>${item.label}</span><span class="choice-arrow">→</span>`;
+        btn.addEventListener('click', () => onSelect(item));
+        box.appendChild(btn);
+      });
+    }
+
+    function enterStage(stage) {
+      clearAllTimers();
+      state.stage = stage;
+      state.locked = false;
+
+      // Reset overlays
+      document.getElementById('ov-stage2-flash').classList.add('hidden');
+      document.getElementById('ov-stage4-modal').classList.add('hidden');
+      document.getElementById('ov-stage6-assess').classList.add('hidden');
+      document.getElementById('ov-stage8').classList.add('hidden');
+      document.getElementById('stage7-vignette').classList.add('hidden');
+      document.getElementById('s7-notif-tray').classList.add('hidden');
+      document.getElementById('s7-notif-tray').innerHTML = '';
+      document.getElementById('stage7-next-wrap').classList.add('hidden');
+
+      const extraSlot = document.getElementById('stage-extra-slot');
+      extraSlot.innerHTML = '';
+      extraSlot.classList.add('hidden');
+
+      const hint = document.getElementById('stage-hint-text');
+      hint.textContent = '';
+      hint.style.color = '#64748B';
+
+      const qCard = document.getElementById('q-card');
+      qCard.classList.remove('hidden');
+
+      if (stage <= 7) {
+        applyDiagnosticTheme(stage);
+      }
+
+      /* ---------------------------------------------------------------------
+         Stage 1 (Q1/8 | 現在：21歳) — Bright, clean habits question
+      --------------------------------------------------------------------- */
+      if (stage === 1) {
+        renderStandardChoices(
+          '毎月のバイト代や仕送り、普段はどんなふうに使ってる？',
+          [
+            { label: '遊び・ファッション・推活でほぼ使い切る', pts: 2 },
+            { label: '余った分だけなんとなく口座に残している', pts: 5 },
+            { label: '毎月決まった額を先取りで貯金している', pts: 9 }
+          ],
+          '',
+          (item) => {
+            if (state.locked) return;
+            state.locked = true;
+            state.points += item.pts;
+            SoundEngine.cheerfulChime();
+            schedule(() => enterStage(2), 240);
+          }
+        );
+        return;
+      }
+
+      /* ---------------------------------------------------------------------
+         Stage 2 (Q2/8 | 予測：23歳) — Bright question + 0.65s Flash Log Overlay
+      --------------------------------------------------------------------- */
+      if (stage === 2) {
+        renderStandardChoices(
+          '恋人とのデートや記念日。無理なく出せる予算のイメージは？',
+          [
+            { label: 'その場のテンション優先！多少カード払いでもOK', pts: 1 },
+            { label: '5,000円〜1万円くらいでバランスよく楽しむ', pts: 5 },
+            { label: '予算を決めて無理のない範囲で計画する', pts: 8 }
+          ],
+          '',
+          (item) => {
+            if (state.locked) return;
+            state.locked = true;
+            state.points += item.pts;
+
+            // Trigger 0.65s dark full-frame flash overlay with crisp white/red log
+            SoundEngine.flashImpact();
+            const flashEl = document.getElementById('ov-stage2-flash');
+            flashEl.classList.remove('hidden');
+            const card = flashEl.querySelector('.flash-log-card');
+            card.classList.remove('anim-shake');
+            void card.offsetWidth;
+            card.classList.add('anim-shake');
+
+            schedule(() => {
+              flashEl.classList.add('hidden');
+              enterStage(3);
+            }, 650);
+          }
+        );
+        return;
+      }
+
+      /* ---------------------------------------------------------------------
+         Stage 3 (Q3/8 | 予測：25歳) — Cool-gray + Future Simulation Mini-Window
+      --------------------------------------------------------------------- */
+      if (stage === 3) {
+        extraSlot.classList.remove('hidden');
+        extraSlot.innerHTML = `
+          <div class="sim-window-card anim-fade-up">
+            <div class="sim-window-top">
+              <span class="sim-window-label">
+                <span style="width:7px; height:7px; border-radius:50%; background:#64748B; display:inline-block;"></span>
+                25歳・未来シミュレーション小窓
+              </span>
+              <span style="font-family:var(--font-mono); font-size:10px; color:#94A3B8;">SIM LOG</span>
+            </div>
+            <div class="sim-msg-bubble">
+              「ねぇ、今年こそ旅行とか同棲の話しない？」
+            </div>
+            <div id="s3-status" class="sim-status-bar">既読</div>
+          </div>
+        `;
+
+        // Mutate status cleanly in place with eerie low chime
+        schedule(() => {
+          const st = document.getElementById('s3-status');
+          if (st) {
+            SoundEngine.eerieLowChime();
+            st.textContent = '既読（1日前）';
+            st.style.color = '#475569';
+          }
+        }, 1050);
+
+        schedule(() => {
+          const st = document.getElementById('s3-status');
+          if (st) {
+            SoundEngine.eerieLowChime();
+            st.textContent = '返信保留（3日前）：今月ちょっと厳しくて…';
+            st.style.color = '#E11D48';
+          }
+        }, 2150);
+
+        renderStandardChoices(
+          'パートナーから『そろそろ将来のことも考えたいね』と言われたら？',
+          [
+            { label: '「まだ先の話じゃない？」と笑ってごまかす', pts: 1 },
+            { label: '焦るけど、お金のことは一旦あと回しにする', pts: 4 },
+            { label: '今の貯金額や生活費を正直に話し合う', pts: 8 }
+          ],
+          'skin-cool',
+          (item) => {
+            if (state.locked) return;
+            state.locked = true;
+            state.points += item.pts;
+            SoundEngine.eerieLowChime();
+            schedule(() => enterStage(4), 260);
+          }
+        );
+        return;
+      }
+
+      /* ---------------------------------------------------------------------
+         Stage 4 (Q4/8 | 予測：28歳) — Cold Slate + 52% Filter Interception Modal
+      --------------------------------------------------------------------- */
+      if (stage === 4) {
+        renderStandardChoices(
+          '社会人6年目。同世代の結婚ラッシュの中、あなたが一番自信を持てる強みは？',
+          [
+            { label: '一緒にいて楽しい人柄や優しさ', pts: 3 },
+            { label: '仕事へのやる気やこれからの伸びしろ', pts: 5 },
+            { label: '将来を見据えた安定した生活設計', pts: 8 }
+          ],
+          'skin-slate',
+          (item) => {
+            if (state.locked) return;
+            state.locked = true;
+            state.points += item.pts;
+            openStage4AlertModal();
+          }
+        );
+        return;
+      }
+
+      /* ---------------------------------------------------------------------
+         Stage 5 (Q5/8 | 予測：30歳) — Dark Charcoal + 55Hz Drone + DDLC Hijack
+      --------------------------------------------------------------------- */
+      if (stage === 5) {
+        state.s5Hijacked = false;
+        SoundEngine.startDrone55();
+
+        const pairs = [
+          {
+            orig: '毎年旅行に行ける余裕のある暮らし',
+            hijack: '『ごめん、今は貯金が足りなくて…』と切り出す未来'
+          },
+          {
+            orig: 'お金の不安なく子どもを育てられる家庭',
+            hijack: '物価高と家賃だけで毎月ギリギリの未来'
+          },
+          {
+            orig: 'お互いの夢を諦めない生活',
+            hijack: '相手の親への挨拶を先延ばしにし続ける未来'
+          }
+        ];
+
+        document.getElementById('q-text').textContent =
+          '30歳。本気で結婚したい相手と出会ったら、どんな未来を約束したい？';
+        const box = document.getElementById('q-choices');
+        box.innerHTML = '';
+
+        const btnRefs = pairs.map((p) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'choice-btn skin-dark';
+          btn.innerHTML = `<span>${p.orig}</span><span class="choice-arrow">→</span>`;
+          btn.addEventListener('click', () => {
+            if (!state.s5Hijacked) {
+              runStage5Hijack(btnRefs, pairs);
+              return;
+            }
+            if (state.locked) return;
+            state.locked = true;
+            SoundEngine.metalTick();
+            schedule(() => enterStage(6), 240);
+          });
+          box.appendChild(btn);
+          return btn;
+        });
+
+        // Automatically hijack choices after 1.1s (staggered 350ms apart)
+        schedule(() => {
+          if (state.stage === 5 && !state.s5Hijacked) {
+            runStage5Hijack(btnRefs, pairs);
+          }
+        }, 1100);
+        return;
+      }
+
+      /* ---------------------------------------------------------------------
+         Stage 6 (Q6/8 | 予測：31歳) — Darker Vignette + Countdown & Heart Crack
+      --------------------------------------------------------------------- */
+      if (stage === 6) {
+        renderStandardChoices(
+          '正直に答えてください。今、『毎月いくら将来に回しているか』胸を張って言えますか？',
+          [
+            { label: '今はまだ何も回せていない', pts: 1 },
+            { label: '銀行に少しだけ。運用はしたことがない', pts: 4 },
+            { label: '少額でも将来に向けて計画している', pts: 7 }
+          ],
+          'skin-dark',
+          (item) => {
+            if (state.locked) return;
+            state.locked = true;
+            state.points += item.pts;
+            runStage6AssessmentOverlay();
+          }
+        );
+        return;
+      }
+
+      /* ---------------------------------------------------------------------
+         Stage 7 (Q7/8 | 予測：33歳) — Heartbeat Vignette + 5 OS Notifications
+      --------------------------------------------------------------------- */
+      if (stage === 7) {
+        state.s7Answered = false;
+        state.s7NotifCount = 0;
+
+        document.getElementById('stage7-vignette').classList.remove('hidden');
+        const tray = document.getElementById('s7-notif-tray');
+        tray.innerHTML = '';
+        tray.classList.remove('hidden');
+
+        SoundEngine.startDrone55();
+        SoundEngine.startHeartbeat();
+
+        const notifications = [
+          { app: '銀行アプリ', text: '普通預金残高が3万円を下回りました' },
+          { app: 'ニュース速報', text: '物価高と実質賃金低下、将来必要資金が過去最高を更新' },
+          { app: 'パートナー', text: '『ごめん、将来のこと真剣に考えたいから少し距離置こう』' },
+          { app: '招待状', text: '大学の同期から結婚式の招待が届きました（ご祝儀目安：30,000円）' },
+          { app: 'モテ資産診断', text: '警告——これ以上の放置は修復困難です' }
+        ];
+
+        function pushNotif(index) {
+          if (state.stage !== 7 || index < state.s7NotifCount || index >= notifications.length) return;
+          state.s7NotifCount = index + 1;
+          const n = notifications[index];
+          SoundEngine.notifPing(index);
+
+          const card = document.createElement('div');
+          card.className = 'os-notif';
+          card.innerHTML = `
+            <div class="os-notif-head">
+              <span>${n.app}</span>
+              <span>今</span>
+            </div>
+            <div class="os-notif-body">${n.text}</div>
+          `;
+          tray.appendChild(card);
+
+          if (state.s7NotifCount === notifications.length) {
+            schedule(() => {
+              if (state.stage === 7) {
+                document.getElementById('stage7-next-wrap').classList.remove('hidden');
+                document.getElementById('stage7-next-wrap').classList.add('anim-fade-up');
+              }
+            }, 380);
+          }
+        }
+
+        // Cascade first 2 notifications as Stage 7 loads
+        schedule(() => pushNotif(0), 420);
+        schedule(() => pushNotif(1), 1150);
+
+        renderStandardChoices(
+          '『お金のことは社会人になってからでいい』——学生時代の自分に、今のあなたはなんて言いますか？',
+          [
+            { label: '「お願いだから、少額でも早く調べておいて」', pts: 2 },
+            { label: '「貯金だけじゃ足りないって、早く気づいて」', pts: 4 },
+            { label: '「まだ大丈夫なんて、絶対に思わないで」', pts: 6 }
+          ],
+          'skin-dark',
+          (item) => {
+            if (state.s7Answered) return;
+            state.s7Answered = true;
+            state.points += item.pts;
+
+            // Dim question card so all 5 notifications are unobstructed and razor-sharp
+            qCard.classList.add('hidden');
+            hint.textContent = '33歳時点のリアル通知を受信中…';
+            hint.style.color = '#FDA4AF';
+
+            // Cascade remaining notifications rapidly
+            let delay = 80;
+            for (let i = state.s7NotifCount; i < notifications.length; i++) {
+              const idx = i;
+              schedule(() => pushNotif(idx), delay);
+              delay += 540;
+            }
+          }
+        );
+        return;
+      }
+
+      /* ---------------------------------------------------------------------
+         Stage 8 (Q8/8 | 予測：34歳 | CLIMAX) — Poster Frame + 2-Tap CRT Power-Off
+      --------------------------------------------------------------------- */
+      if (stage === 8) {
+        state.s8TapCount = 0;
+        SoundEngine.stopHeartbeat();
+        SoundEngine.deepThud();
+
+        const ov8 = document.getElementById('ov-stage8');
+        const crt = document.getElementById('crt-screen');
+        const logBox = document.getElementById('s8-log-box');
+        const retryBtn = document.getElementById('btn-s8-retry');
+
+        crt.classList.remove('anim-crt-off');
+        logBox.innerHTML = '';
+        logBox.classList.add('hidden');
+        retryBtn.disabled = false;
+        retryBtn.textContent = '未来をやり直す';
+
+        ov8.classList.remove('hidden');
+      }
+    }
+
+    /**
+     * Stage 4 Interception Modal
+     */
+    function openStage4AlertModal() {
+      SoundEngine.alertBeep();
+      const modal = document.getElementById('ov-stage4-modal');
+      const ignoreBtn = document.getElementById('btn-s4-ignore');
+      ignoreBtn.disabled = false;
+      ignoreBtn.textContent = 'フィルターを無視する';
+      ignoreBtn.classList.remove('anim-shake');
+      modal.classList.remove('hidden');
+    }
+
+    /**
+     * Stage 5 Sequential Clean Hijack (Staggered 350ms apart, 100% crisp text)
+     */
+    function runStage5Hijack(btnRefs, pairs) {
+      if (state.s5Hijacked) return;
+      state.s5Hijacked = true;
+      state.locked = true;
+
+      const hint = document.getElementById('stage-hint-text');
+
+      pairs.forEach((p, idx) => {
+        schedule(() => {
+          if (state.stage !== 5) return;
+          SoundEngine.hijackBeep();
+          const btn = btnRefs[idx];
+          btn.className = 'choice-btn skin-hijacked anim-shake';
+          btn.innerHTML = `
+            <span class="hijack-strike">${p.orig}</span>
+            <span class="hijack-replace">
+              <span class="hijack-tag">予測上書き</span>
+              <span>${p.hijack}</span>
+            </span>
+          `;
+
+          if (idx === pairs.length - 1) {
+            schedule(() => {
+              state.locked = false;
+              hint.textContent = 'いずれかを選択して先へ進んでください';
+              hint.style.color = '#FDA4AF';
+            }, 260);
+          }
+        }, idx * 350);
+      });
+    }
+
+    /**
+     * Stage 6 Candidate Countdown + Clean Heart Crack + Red Stamp
+     */
+    function runStage6AssessmentOverlay() {
+      const ov = document.getElementById('ov-stage6-assess');
+      const countEl = document.getElementById('s6-count-num');
+      const heartL = document.getElementById('s6-heart-l');
+      const heartR = document.getElementById('s6-heart-r');
+      const stamp = document.getElementById('s6-stamp');
+      const nextBtn = document.getElementById('btn-s6-next');
+
+      countEl.innerHTML = '142<span style="font-size:20px; margin-left:4px;">人</span>';
+      countEl.style.color = '#FFFFFF';
+      heartL.classList.remove('heart-crack-l');
+      heartR.classList.remove('heart-crack-r');
+      stamp.classList.add('hidden');
+      stamp.classList.remove('anim-stamp');
+      nextBtn.classList.add('hidden');
+
+      ov.classList.remove('hidden');
+
+      const steps = [
+        { ms: 380, num: 68 },
+        { ms: 760, num: 19 },
+        { ms: 1140, num: 1 },
+        { ms: 1560, num: 0 }
+      ];
+
+      steps.forEach((step) => {
+        schedule(() => {
+          if (state.stage !== 6) return;
+          SoundEngine.metalTick();
+          countEl.innerHTML = `${step.num}<span style="font-size:20px; margin-left:4px;">人</span>`;
+          if (step.num <= 1) {
+            countEl.style.color = '#FF1457';
+          }
+        }, step.ms);
+      });
+
+      // Heart cracks cleanly in two + sharp red stamp slams down
+      schedule(() => {
+        if (state.stage !== 6) return;
+        SoundEngine.heartCrackSound();
+        heartL.classList.add('heart-crack-l');
+        heartR.classList.add('heart-crack-r');
+
+        schedule(() => {
+          if (state.stage !== 6) return;
+          stamp.classList.remove('hidden');
+          stamp.classList.add('anim-stamp');
+          nextBtn.classList.remove('hidden');
+          nextBtn.classList.add('anim-fade-up');
+        }, 360);
+      }, 1920);
+    }
+
+    /**
+     * Stage 8 Two-Tap Climax + Dramatic CRT Television Power-Off
+     */
+    function handleStage8RetryTap() {
+      const btn = document.getElementById('btn-s8-retry');
+      const logBox = document.getElementById('s8-log-box');
+      const crt = document.getElementById('crt-screen');
+
+      if (state.s8TapCount === 0) {
+        state.s8TapCount = 1;
+        SoundEngine.alertBeep();
+        btn.classList.remove('anim-shake');
+        void btn.offsetWidth;
+        btn.classList.add('anim-shake');
+        btn.textContent = 'それでもやり直す';
+
+        logBox.classList.remove('hidden');
+        const firstLogs = [
+          '[ERROR] 34歳から時間を巻き戻すことはできません',
+          '[LOG] 失われた複利運用期間：12年間',
+          '[LOG] 機会損失額：数百万円規模'
+        ];
+        firstLogs.forEach((line, i) => {
+          schedule(() => {
+            SoundEngine.metalTick();
+            const p = document.createElement('p');
+            p.innerHTML = line.replace(/^(\[[A-Z]+\])/, '<span class="log-err-tag">$1</span>');
+            logBox.appendChild(p);
+          }, i * 200);
+        });
+      } else if (state.s8TapCount === 1) {
+        state.s8TapCount = 2;
+        btn.disabled = true;
+
+        const burstLogs = [
+          '[CRITICAL] 2038年シミュレーション終了処理…',
+          '[OVERRIDE] タイムスタンプを2026年へ強制ロールバック'
+        ];
+        burstLogs.forEach((line, i) => {
+          schedule(() => {
+            SoundEngine.hijackBeep();
+            const p = document.createElement('p');
+            p.innerHTML = line.replace(/^(\[[A-Z]+\])/, '<span class="log-err-tag">$1</span>');
+            logBox.appendChild(p);
+          }, i * 210);
+        });
+
+        // Dramatic CRT Power-Off Collapse + Instant Complete Silence
+        schedule(() => {
+          SoundEngine.crtCutOff();
+          crt.classList.add('anim-crt-off');
+
+          schedule(() => {
+            document.getElementById('ov-stage8').classList.add('hidden');
+            startAct3SilenceAwakening();
+          }, 540);
+        }, 560);
+      }
+    }
+
+    /**
+     * =========================================================================
+     * 6. ACT 3: ABSOLUTE SILENCE & AWAKENING
+     * =========================================================================
+     */
+    function finishAct3Immediately() {
+      if (state.act3Done) return;
+      state.act3RunId++;
+      state.act3Done = true;
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById(`a3-${i}`).classList.add('visible');
+      }
+      const btn = document.getElementById('btn-to-act4');
+      btn.classList.remove('hidden');
+      btn.classList.add('anim-fade-up');
+      document.getElementById('a3-hint').classList.add('hidden');
+    }
+
+    async function startAct3SilenceAwakening() {
+      SoundEngine.stopAllAmbient();
+      const myRun = ++state.act3RunId;
+      state.act3Done = false;
+
+      const ov3 = document.getElementById('ov-act3');
+      const btn = document.getElementById('btn-to-act4');
+      const hint = document.getElementById('a3-hint');
+
+      btn.classList.add('hidden');
+      hint.classList.remove('hidden');
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById(`a3-${i}`).classList.remove('visible');
+      }
+
+      ov3.classList.remove('hidden');
+
+      const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+      await wait(450);
+
+      for (let i = 1; i <= 5; i++) {
+        if (state.act3RunId !== myRun) return;
+        document.getElementById(`a3-${i}`).classList.add('visible');
+        await wait(i === 5 ? 720 : 880);
+      }
+
+      if (state.act3RunId !== myRun) return;
+      state.act3Done = true;
+      btn.classList.remove('hidden');
+      btn.classList.add('anim-fade-up');
+      hint.classList.add('hidden');
+    }
+
+    /**
+     * =========================================================================
+     * 7. ACT 4: DAYTIME WHITE REPORT, TIME MACHINE CHART & OFFICIAL BRIEFING
+     * =========================================================================
+     */
+    function computeResult() {
+      const clamped = Math.max(22, Math.min(68, state.points));
+      state.finalScore = clamped;
+      state.finalType = DIAG_TYPES.find(t => clamped <= t.maxScore) || DIAG_TYPES[DIAG_TYPES.length - 1];
+    }
+
+    function enterAct4() {
+      clearAllTimers();
+      SoundEngine.daytimeRelief();
+      computeResult();
+
+      // Hide earlier screens & overlays
+      document.getElementById('ov-act3').classList.add('hidden');
+      document.getElementById('act-1').classList.add('hidden');
+      document.getElementById('act-2').classList.add('hidden');
+
+      // Apply clean daytime white palette
+      document.body.style.backgroundColor = '#E2E8F0';
+      const frame = document.getElementById('app-frame');
+      frame.style.backgroundColor = '#F4F7F6';
+
+      const topBar = document.getElementById('top-bar');
+      topBar.style.background = 'rgba(255, 255, 255, 0.96)';
+      topBar.style.borderBottomColor = '#E2E8F0';
+      document.getElementById('brand-icon').style.background = '#008B5E';
+      document.getElementById('hdr-title').style.color = '#0F2744';
+      document.getElementById('hdr-sub').style.color = '#008B5E';
+      document.getElementById('hdr-sub').textContent = '埼玉縣信用金庫 × 大宮キャンパス 公式企画';
+
+      const sndBtn = document.getElementById('btn-sound');
+      sndBtn.style.background = '#F8FAFC';
+      sndBtn.style.color = '#334155';
+      sndBtn.style.borderColor = '#CBD5E1';
+
+      // Populate Section 1 Result Card
+      document.getElementById('res-type-name').textContent = `『${state.finalType.name}』`;
+      document.getElementById('res-score-num').textContent = String(state.finalScore);
+      document.getElementById('res-gap-label').textContent = `安心ラインまであと${70 - state.finalScore}点不足`;
+      document.getElementById('res-takeaway').textContent = state.finalType.takeaway;
+
+      // Populate Section 2 Simulator (default ¥10,000)
+      document.getElementById('sim-slider').value = '10000';
+      updateTimeMachineChart(10000);
+
+      // Populate Section 3 Official Briefing & Restore localStorage Memo
+      restoreMemoFromStorage();
+
+      // Show Act 4 & animate gauge
+      document.getElementById('act-4').classList.remove('hidden');
+      document.getElementById('sticky-bar').classList.remove('hidden');
+      document.getElementById('sticky-bar').classList.remove('bar-hidden');
+      window.scrollTo({ top: 0, behavior: 'instant' });
+
+      requestAnimationFrame(() => {
+        document.getElementById('res-gauge-fill').style.width = `${state.finalScore}%`;
+      });
+
+      setupBriefingObserver();
+    }
+
+    /**
+     * Compound Interest Calculation & Dynamic SVG Line Chart (20 Years)
+     */
+    function calcCompoundYen(monthly, years, annualRate) {
+      if (years === 0) return 0;
+      const months = years * 12;
+      const r = annualRate / 12;
+      return monthly * ((Math.pow(1 + r, months) - 1) / r);
+    }
+
+    function getStudentEquivalent(monthly) {
+      if (monthly <= 3000) return `月${monthly.toLocaleString()}円 ＝ カフェ数回分 / サブスク数本分`;
+      if (monthly <= 7000) return `月${monthly.toLocaleString()}円 ＝ 飲み会1〜2回分 / バイト半日分`;
+      if (monthly <= 15000) return `月${monthly.toLocaleString()}円 ＝ ランチ約10回分 / バイト約1日分`;
+      if (monthly <= 30000) return `月${monthly.toLocaleString()}円 ＝ バイト2〜3日分 / 本気の将来準備`;
+      return `月${monthly.toLocaleString()}円 ＝ バイト代からのフル積立ペース`;
+    }
+
+    function updateTimeMachineChart(monthly) {
+      state.monthlyYen = monthly;
+
+      const slider = document.getElementById('sim-slider');
+      const pct = ((monthly - 1000) / (50000 - 1000)) * 100;
+      slider.style.background = `linear-gradient(90deg, #008B5E 0%, #008B5E ${pct}%, #CBD5E1 ${pct}%)`;
+
+      document.getElementById('sim-monthly-val').textContent = monthly.toLocaleString();
+      document.getElementById('sim-equiv-label').textContent = getStudentEquivalent(monthly);
+
+      // Generate 0..20 year series in 万円
+      const bankSeries = [];
+      const nisaSeries = [];
+      for (let y = 0; y <= 20; y++) {
+        bankSeries.push(calcCompoundYen(monthly, y, 0.001) / 10000);
+        nisaSeries.push(calcCompoundYen(monthly, y, 0.05) / 10000);
+      }
+
+      const bank20 = Math.round(bankSeries[20]);
+      const nisa20 = Math.round(nisaSeries[20]);
+      const diff20 = Math.max(1, nisa20 - bank20);
+
+      // Dynamic predicted 34-year-old score (90–98)
+      const projectedScore = Math.min(98, 90 + Math.round((monthly / 50000) * 8));
+
+      document.getElementById('sim-diff-val').textContent = `＋約${diff20.toLocaleString()}万円`;
+      document.getElementById('sim-totals-sub').textContent = `預金${bank20.toLocaleString()}万 → 運用${nisa20.toLocaleString()}万`;
+      document.getElementById('sim-score-shift').textContent = `${state.finalScore}点 → ${projectedScore}点`;
+
+      // SVG Geometry (viewBox 340 x 192)
+      const padL = 44;
+      const padR = 16;
+      const padT = 18;
+      const padB = 26;
+      const plotW = 340 - padL - padR;
+      const plotH = 192 - padT - padB;
+
+      const rawMax = Math.max(40, nisaSeries[20] * 1.15);
+      const step = rawMax > 1200 ? 500 : rawMax > 450 ? 200 : rawMax > 160 ? 100 : 25;
+      const yMax = Math.ceil(rawMax / step) * step;
+
+      const toX = (yr) => padL + (yr / 20) * plotW;
+      const toY = (val) => padT + plotH - (val / yMax) * plotH;
+
+      // Grid & Labels
+      let gridSvg = '';
+      for (let i = 0; i <= 4; i++) {
+        const v = Math.round((yMax / 4) * i);
+        const y = toY(v);
+        gridSvg += `<line x1="${padL}" y1="${y}" x2="${340 - padR}" y2="${y}" stroke="${i === 0 ? '#CBD5E1' : '#E2E8F0'}" stroke-width="1" ${i > 0 ? 'stroke-dasharray="3 3"' : ''} />`;
+        gridSvg += `<text x="${padL - 6}" y="${y + 3}" text-anchor="end" fill="#64748B" font-size="9" font-family="ui-monospace, monospace">${v === 0 ? '0' : v + '万'}</text>`;
+      }
+
+      const xLabels = [
+        { y: 0, label: '今', anchor: 'start' },
+        { y: 5, label: '5年後', anchor: 'middle' },
+        { y: 10, label: '10年後', anchor: 'middle' },
+        { y: 15, label: '15年後', anchor: 'middle' },
+        { y: 20, label: '20年後', anchor: 'end' }
+      ];
+      xLabels.forEach(item => {
+        gridSvg += `<text x="${toX(item.y)}" y="184" text-anchor="${item.anchor}" fill="#64748B" font-size="9.5" font-weight="700">${item.label}</text>`;
+      });
+      document.getElementById('chart-grid').innerHTML = gridSvg;
+
+      // Paths
+      const bankD = bankSeries.map((v, y) => `${y === 0 ? 'M' : 'L'}${toX(y).toFixed(1)},${toY(v).toFixed(1)}`).join(' ');
+      const nisaD = nisaSeries.map((v, y) => `${y === 0 ? 'M' : 'L'}${toX(y).toFixed(1)},${toY(v).toFixed(1)}`).join(' ');
+      const areaD = `${nisaD} L${toX(20).toFixed(1)},${toY(0).toFixed(1)} L${toX(0).toFixed(1)},${toY(0).toFixed(1)} Z`;
+
+      document.getElementById('chart-bank-path').setAttribute('d', bankD);
+      document.getElementById('chart-nisa-path').setAttribute('d', nisaD);
+      document.getElementById('chart-area').setAttribute('d', areaD);
+
+      // Clear Endpoint Labels
+      const xEnd = toX(20);
+      const yBank = toY(bankSeries[20]);
+      const yNisa = toY(nisaSeries[20]);
+      const nisaTag = `約${nisa20.toLocaleString()}万円`;
+      const bankTag = `${bank20.toLocaleString()}万円`;
+      const pillW = Math.max(76, nisaTag.length * 9 + 14);
+      const pillX = Math.max(padL + 6, xEnd - pillW - 6);
+      const pillY = Math.max(4, yNisa - 24);
+
+      document.getElementById('chart-endpoints').innerHTML = `
+        <line x1="${xEnd}" y1="${yNisa}" x2="${xEnd}" y2="${yBank}" stroke="#008B5E" stroke-width="1.6" stroke-dasharray="2 2" />
+        <circle cx="${xEnd}" cy="${yBank}" r="3.6" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2" />
+        <circle cx="${xEnd}" cy="${yNisa}" r="4.6" fill="#008B5E" stroke="#FFFFFF" stroke-width="2" />
+        <rect x="${pillX}" y="${pillY}" width="${pillW}" height="20" rx="10" fill="#008B5E" />
+        <text x="${pillX + pillW / 2}" y="${pillY + 13.5}" text-anchor="middle" fill="#FFFFFF" font-size="10" font-weight="700">${nisaTag}</text>
+        <text x="${xEnd - 8}" y="${Math.min(toY(0) - 5, yBank + 13)}" text-anchor="end" fill="#64748B" font-size="9.5" font-weight="700">${bankTag}</text>
+      `;
+    }
+
+    /**
+     * Official Campus Briefing Slot, localStorage Persistence & Google Calendar Link
+     */
+    function buildCalendarUrl(slot) {
+      const isNoon = slot === 'noon';
+      const dates = isNoon ? '20261222T124000/20261222T131000' : '20261222T171000/20261222T174000';
+      const title = isNoon
+        ? '大学生のための『はじめてのNISA』30分ミニ説明会（昼休み回）'
+        : '大学生のための『はじめてのNISA』30分ミニ説明会（5限後回）';
+      const details = [
+        '埼玉縣信用金庫 × 大宮キャンパス 公式学内企画',
+        '参加無料・勧誘一切なし・知識ゼロ歓迎・持ち物不要・途中退室OK',
+        `モテ資産診断タイプ：${state.finalType.name}（現在スコア ${state.finalScore}点）`
+      ].join('\n');
+
+      const params = new URLSearchParams({
+        action: 'TEMPLATE',
+        text: title,
+        dates: dates,
+        ctz: 'Asia/Tokyo',
+        location: '大宮キャンパス 2号館 1階 2103教室',
+        details: details
+      });
+      return `https://calendar.google.com/calendar/render?${params.toString()}`;
+    }
+
+    function updateSlotButtonsUI() {
+      document.querySelectorAll('.slot-btn').forEach(btn => {
+        const active = btn.getAttribute('data-slot') === state.selectedSlot;
+        btn.classList.toggle('active', active);
+      });
+    }
+
+    function renderBriefingMemoUI() {
+      const picker = document.getElementById('slot-picker-view');
+      const saved = document.getElementById('saved-pass-view');
+      const preActions = document.getElementById('pre-pass-actions');
+
+      updateSlotButtonsUI();
+
+      if (state.savedMemo) {
+        picker.classList.add('hidden');
+        preActions.classList.add('hidden');
+        saved.classList.remove('hidden');
+
+        document.getElementById('pass-datetime').textContent = state.selectedSlot === 'noon'
+          ? '12月22日（火）① 12:40〜13:10（昼休み）'
+          : '12月22日（火）② 17:10〜17:40（5限後）';
+        document.getElementById('pass-diag-type').textContent =
+          `『${state.finalType.name}』（現在 ${state.finalScore}点）`;
+        document.getElementById('btn-gcal').href = buildCalendarUrl(state.selectedSlot);
+      } else {
+        picker.classList.remove('hidden');
+        preActions.classList.remove('hidden');
+        saved.classList.add('hidden');
+      }
+    }
+
+    function saveMemoToStorage() {
+      try {
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          savedMemo: state.savedMemo,
+          selectedSlot: state.selectedSlot
+        }));
+      } catch (e) {}
+    }
+
+    function restoreMemoFromStorage() {
+      try {
+        const raw = window.localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && (parsed.selectedSlot === 'noon' || parsed.selectedSlot === 'evening')) {
+            state.selectedSlot = parsed.selectedSlot;
+          }
+          state.savedMemo = Boolean(parsed && parsed.savedMemo);
+        }
+      } catch (e) {}
+      renderBriefingMemoUI();
+    }
+
+    /**
+     * Sticky Bottom Bar: Active in Act 4 until Briefing Card scrolls into view
+     */
+    function setupBriefingObserver() {
+      if (state.briefingObserver) {
+        state.briefingObserver.disconnect();
+      }
+      const target = document.getElementById('briefing-card');
+      const bar = document.getElementById('sticky-bar');
+      if (!('IntersectionObserver' in window)) return;
+
+      state.briefingObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            bar.classList.add('bar-hidden');
+          } else {
+            bar.classList.remove('bar-hidden');
+          }
+        });
+      }, { threshold: 0.15 });
+
+      state.briefingObserver.observe(target);
+    }
+
+    /**
+     * Full Reset to Act 1
+     */
+    function resetDiagnosis() {
+      clearAllTimers();
+      SoundEngine.stopAllAmbient();
+      if (state.briefingObserver) {
+        state.briefingObserver.disconnect();
+        state.briefingObserver = null;
+      }
+
+      state.stage = 0;
+      state.locked = false;
+      state.points = 22;
+      state.s5Hijacked = false;
+      state.s7Answered = false;
+      state.s7NotifCount = 0;
+      state.s8TapCount = 0;
+
+      document.getElementById('act-4').classList.add('hidden');
+      document.getElementById('act-2').classList.add('hidden');
+      document.getElementById('sticky-bar').classList.add('hidden');
+      document.getElementById('ov-stage2-flash').classList.add('hidden');
+      document.getElementById('ov-stage4-modal').classList.add('hidden');
+      document.getElementById('ov-stage6-assess').classList.add('hidden');
+      document.getElementById('ov-stage8').classList.add('hidden');
+      document.getElementById('ov-act3').classList.add('hidden');
+      document.getElementById('stage7-vignette').classList.add('hidden');
+      document.getElementById('s7-notif-tray').classList.add('hidden');
+      document.getElementById('res-gauge-fill').style.width = '0%';
+
+      applyDiagnosticTheme(1);
+      document.getElementById('act-1').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /**
+     * =========================================================================
+     * 8. EVENT LISTENERS
+     * =========================================================================
+     */
+    // Sound Toggle
+    document.getElementById('btn-sound').addEventListener('click', () => {
+      const on = SoundEngine.toggle();
+      document.getElementById('sound-label').textContent = on ? '🔊 音 ON' : '🔇 音 OFF';
+    });
+
+    // Act 1 Start Button
+    document.getElementById('btn-start').addEventListener('click', () => {
+      SoundEngine.ensureCtx();
+      SoundEngine.cheerfulChime();
+      document.getElementById('act-1').classList.add('hidden');
+      document.getElementById('act-2').classList.remove('hidden');
+      enterStage(1);
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    });
+
+    // Stage 4 Modal Buttons
+    document.getElementById('btn-s4-ignore').addEventListener('click', (e) => {
+      SoundEngine.alertBeep();
+      const btn = e.currentTarget;
+      btn.classList.remove('anim-shake');
+      void btn.offsetWidth;
+      btn.classList.add('anim-shake');
+      btn.textContent = '※現実の条件は解除できません';
+      btn.disabled = true;
+    });
+
+    document.getElementById('btn-s4-accept').addEventListener('click', () => {
+      SoundEngine.metalTick();
+      document.getElementById('ov-stage4-modal').classList.add('hidden');
+      enterStage(5);
+    });
+
+    // Stage 6 Next Button
+    document.getElementById('btn-s6-next').addEventListener('click', () => {
+      SoundEngine.metalTick();
+      enterStage(7);
+    });
+
+    // Stage 7 To Stage 8 Button
+    document.getElementById('btn-s7-to-s8').addEventListener('click', () => {
+      enterStage(8);
+    });
+
+    // Stage 8 Retry Button (2-tap climax -> CRT power-off)
+    document.getElementById('btn-s8-retry').addEventListener('click', handleStage8RetryTap);
+
+    // Act 3 Skip & Transition to Act 4
+    document.getElementById('ov-act3').addEventListener('click', (e) => {
+      if (e.target.closest('#btn-to-act4')) return;
+      finishAct3Immediately();
+    });
+
+    document.getElementById('btn-to-act4').addEventListener('click', (e) => {
+      e.stopPropagation();
+      enterAct4();
+    });
+
+    // Act 4 Simulator Slider
+    document.getElementById('sim-slider').addEventListener('input', (e) => {
+      updateTimeMachineChart(parseInt(e.target.value, 10));
+    });
+
+    // Act 4 Slot Selection
+    document.querySelectorAll('.slot-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        SoundEngine.softClick();
+        state.selectedSlot = btn.getAttribute('data-slot');
+        updateSlotButtonsUI();
+      });
+    });
+
+    // Act 4 Create Memo (Zero-Friction 1-Tap)
+    document.getElementById('btn-create-memo').addEventListener('click', () => {
+      SoundEngine.cheerfulChime();
+      state.savedMemo = true;
+      saveMemoToStorage();
+      renderBriefingMemoUI();
+      showToast('12/22 説明会の参加メモを保存しました！');
+    });
+
+    document.getElementById('btn-edit-slot').addEventListener('click', () => {
+      SoundEngine.softClick();
+      state.savedMemo = false;
+      saveMemoToStorage();
+      renderBriefingMemoUI();
+    });
+
+    // Sticky Bottom Bar Scroll + Border Pulse
+    document.getElementById('btn-sticky-scroll').addEventListener('click', () => {
+      SoundEngine.softClick();
+      const card = document.getElementById('briefing-card');
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      card.classList.remove('pulse-briefing');
+      void card.offsetWidth;
+      card.classList.add('pulse-briefing');
+    });
+
+    // Share Copy
+    function handleShare() {
+      const slotLabel = state.selectedSlot === 'noon' ? '12/22(火) 12:40〜' : '12/22(火) 17:10〜';
+      const shareText = `【モテ資産診断 〜あなたの将来はこうなるかも？〜】\n診断結果：『${state.finalType.name}』（${state.finalScore}点）\n普通の恋愛診断だと思ったら34歳の未来がリアルに怖すぎた…！\n${slotLabel}に2103教室である30分NISA説明会、一緒に行かん？\n${window.location.href}`;
+      copyToClipboard(shareText, '診断結果とURLをコピーしました！');
+    }
+    document.getElementById('btn-share-pass').addEventListener('click', handleShare);
+    document.getElementById('btn-share-pre').addEventListener('click', handleShare);
+
+    // Reset Buttons
+    document.getElementById('btn-reset-pass').addEventListener('click', resetDiagnosis);
+    document.getElementById('btn-reset-pre').addEventListener('click', resetDiagnosis);
+  </script>
+</body>
+</html>
